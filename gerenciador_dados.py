@@ -1,4 +1,5 @@
 def carregar_dados():
+    nome = 2
     ...
 
 def salvar_dados():
