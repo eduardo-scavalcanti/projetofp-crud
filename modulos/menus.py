@@ -1,5 +1,6 @@
 def menu_medicos():
     ...
+    
 
 def menu_pacientes():
     ...
