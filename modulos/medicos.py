@@ -38,7 +38,11 @@ def info_medico():
         print("Nenhum médico cadastrado.")
         return
     else:
-        id_busca = int(input("\nDigite o ID do médico: "))
+        id_busca = input("\nDigite o ID do médico: ")
+        while(id_busca.isdigit() == False):
+            print("INVÁLIDO. Insira um ID válido (apenas números)")
+            id_busca = input("\nDigite o ID do médico: ")
+        id_busca = int(id_busca)
     for medico in bancomedico:
             if medico["id"] == id_busca:
                 print("--- Dados do Médico: ---")
@@ -50,10 +54,10 @@ def info_medico():
             else:
                 print("Médico não encontrado.")
                 return
-info_medico()
 
 def alterar_medico():
     ...
+    #
 
 def excluir_medico():
     ...
