@@ -91,5 +91,20 @@ def alterar_medico():
 
 
 def excluir_medico():
-    ...
-
+    bancomedico = gerenciador_dados.carregar_dados(ARQUIVOMEDICO)
+    if len(bancomedico)==0:
+        print("Não Há Médicos cadastrados nesse banco.")
+        return
+    else:
+        id_excluido = input("Digite o ID você quer excluir: ")
+        while(id_excluido.isdigit() == False):
+            print("INVÁLIDO. Insira um CRM (apenas números)")
+            id_excluido = input("Digite o ID você quer excluir: ")
+        id_excluido = int(id_excluido)
+        for medico in bancomedico:
+            if(medico["id"] == id_excluido):
+                bancomedico.remove(medico)
+                print("Médico excluido com sucesso!!")
+                bancomedico = gerenciador_dados.salvar_dados(ARQUIVOMEDICO, bancomedico)
+                return
+        print("Médico Não encontrado. Não é possível excluir.")
