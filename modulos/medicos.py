@@ -1,6 +1,5 @@
 import gerenciador_dados
-ARQUIVOMEDICO = "medicos.json"
-
+ARQUIVOMEDICO = "medicos.json" 
 
 def cadastrar_medico():
     nomemedico = str(input("Digite o nome do Médico: "))
@@ -22,21 +21,35 @@ def cadastrar_medico():
     if len(bancomedico) == 0:
         medico["id"] = 1
     else:
-        medico["id"] = bancomedico[len(bancomedico)-1]["id"]+1
+       medico["id"] = bancomedico[len(bancomedico)-1]["id"]+1
     medico["nome"] = nomemedico 
     medico["crm"] = crmmedico
     medico["especialidade"] = especialidademedico
     print(bancomedico)
     gerenciador_dados.salvar_dados(medico, ARQUIVOMEDICO)
-
     print("Médico Cadastrado com sucesso!!")
-cadastrar_medico()
+
+
 
 def info_medico():
-    print("===INFORMAÇÕES DOS MÉDICOS===")
-    opcao = str(input("Deseja procurar por algum médico ? (S/N)"))
-    if(opcao in "Ss"):
-        print("")
+    bancomedico = gerenciador_dados.carregar_dados(ARQUIVOMEDICO)
+    print("\n=== INFORMAÇÕES DOS MÉDICOS CADASTRADOS ===")
+    if len(bancomedico) == 0:
+        print("Nenhum médico cadastrado.")
+        return
+    else:
+        id_busca = int(input("\nDigite o ID do médico: "))
+    for medico in bancomedico:
+            if medico["id"] == id_busca:
+                print("--- Dados do Médico: ---")
+                print(f"ID: {medico['id']}")
+                print(f"Nome: {medico['nome']}")
+                print(f"CRM: {medico['crm']}")
+                print(f"Especialidade: {medico['especialidade']}")
+                return
+            else:
+                print("Médico não encontrado.")
+                return
 info_medico()
 
 def alterar_medico():
