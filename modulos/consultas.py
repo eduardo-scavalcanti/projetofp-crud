@@ -50,48 +50,27 @@ def cadastrar_consulta():
     banco_consulta = gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA,consulta)
     
 def info_consulta():
-    especialidade_medico = input('Informe a especialidade do médico: ')
-    while especialidade_medico.replace(" ", "").isalpha() == False:
-        print('Digite apenas letras. Tente novamente!')
-        especialidade_medico = input('Informe a especialidade do médico: ')
-
-    def formas_pagamento():
-        print('1 - Pix')
-        print('2 - Cartão')
-        print('3 - Dinheiro')
-
-    formas_pagamento()
-    pagamento = input('Digite a forma do pagamento: ')
-    while pagamento not in ['1', '2', '3']:
-        print('Digite uma opção de pagamento dentre uma das opções acima. Tente novamente!')
-        pagamento = input('Digite a forma do pagamento:')
-    
-    if pagamento == '1':
-        print('Pagamento Confirmado!')
-    
-    if pagamento == '2':
-        print('Pagamento efetuado com sucesso!')
-    
-    if pagamento == '3':
-        valor = float(input('Informe o valor da consulta: R$'))
-        especie = float(input('Informe o valor pago em espécie: R$'))
-        troco = especie - valor
-        if troco != 0:
-            print(f'O valor do troco foi de R${troco:.2f}')
-
-    banco_consulta = gerenciador_dados.carregar_dados()
-    consulta = {}
-    if len(banco_consulta) == 0:
-        consulta['id'] = 1
+    banco_consulta = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTA)
+    if len(bancoconsulta) == 0:
+        print('Nenhum consulta cadastrado.')
     else:
-        consulta['id'] = banco_consulta[len(banco_consulta)-1]['id']+1
-    consulta['especialidade'] = especialidade_medico
-    consulta['pagamento'] = pagamento
-    banco_consulta.append(consulta)
-    print(banco_consulta)
-    banco_consulta = gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA,consulta)
+        id_consulta = input('Digite o ID da consulta: ')
+        while id_consulta.isdigit() == False:
+            print('Digite apenas o ID (apenas números).')
+            id_consulta = input('Digite o ID da consulta: ')
+        id_consulta = int(id_consulta)
 
-info_consulta()
+        for consulta in banco_consulta:
+            if id_consulta == consulta['id']:
+                print('Dados da Consulta:')
+                print(f'ID : {consulta['id']}')
+                print(f'Médico : {consulta['medico']}')
+                print(f'Paciente : {consulta['paciente']}')
+                print(f'Data : {consulta['data']}')
+                print(f'Queixa : {consulta['queixa']}')
+            else:
+                print('A consulta não foi encontrada!')
+                return
 
 def alterar_consulta():
     ...
