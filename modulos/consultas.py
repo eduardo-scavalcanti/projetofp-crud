@@ -73,7 +73,7 @@ def info_consulta():
                 return
 
 def alterar_consulta():
-    banco_consulta = gerenciador_dados.carregar_dados(ARQUIVOMEDICO)
+    banco_consulta = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTA)
     id_alterado = input("Digite o ID do médico que você quer alterar: ")
     while(id_alterado.isdigit() == False):
         print("INVÁLIDO. Insira um ID válido (apenas números)")
@@ -121,4 +121,21 @@ def alterar_consulta():
     gerenciador_dados.salvar_dados(banco_consulta, ARQUIVO_CONSULTA)
 
 def excluir_consulta():
-    ...
+    banco_consulta = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTA)
+    if len(banco_consulta)==0:
+        print("Não há Consultas cadastrados nesse banco.")
+        return
+    else:
+        id_excluido = input("Digite o ID que você quer excluir: ")
+        while(id_excluido.isdigit() == False):
+            print("INVÁLIDO. Insira um ID (apenas números)")
+            id_excluido = input("Digite o ID que você quer excluir: ")
+        id_excluido = int(id_excluido)
+
+        for consulta in banco_consulta:
+            if(consulta["id"] == id_excluido):
+                banco_consulta.remove(consulta)
+                print("Consulta excluido com sucesso!!")
+                banco_consulta = gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA, banco_consulta)
+                return
+        print("Consulta Não encontrado. Não é possível excluir.")
