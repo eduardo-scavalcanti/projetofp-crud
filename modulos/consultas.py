@@ -28,7 +28,7 @@ def cadastrar_consulta():
         ano = int(input('Digite o ano da consulta: '))
 
     data_consulta = f'{dia}/{mes}/{ano}'
-    print(data_consulta)
+    
 
     queixa = input('Qual foi a queixa do cliente: ')
     while queixa.replace(" ", "").isalpha() == False:
@@ -61,7 +61,7 @@ def info_consulta():
         id_consulta = int(id_consulta)
 
         for consulta in banco_consulta:
-            if id_consulta == consulta['id']:
+            if consulta['id'] == id_consulta:
                 print('Dados da Consulta:')
                 print(f'ID : {consulta['id']}')
                 print(f'Médico : {consulta['medico']}')
@@ -73,7 +73,52 @@ def info_consulta():
                 return
 
 def alterar_consulta():
-    ...
+    banco_consulta = gerenciador_dados.carregar_dados(ARQUIVOMEDICO)
+    id_alterado = input("Digite o ID do médico que você quer alterar: ")
+    while(id_alterado.isdigit() == False):
+        print("INVÁLIDO. Insira um ID válido (apenas números)")
+        id_alterado = input("Digite o ID do médico que você quer alterar: ")
+    id_alterado = int(id_alterado)
+    encontrado = False
+
+    for consulta in banco_consulta:
+        if consulta["id"] == id_alterado:
+            encontrado = True  
+            novo_nomemedico = input("Novo nome do médico: ").strip()
+            while(novo_nomemedico.replace(" ", "").isalpha() == False):
+                print("INVÁLIDO! Insira um NOME (apenas letras)")
+                novo_nomemedico = input("Novo nome do médico: ").strip()
+
+            novo_nomepaciente = input("Novo nome do paciente: ").strip()
+            while(novo_nomepaciente.replace(" ", "").isalpha() == False):
+                print("INVÁLIDO. Insira um NOME (apenas letras)")
+                novo_nomepaciente = input("Novo nome do paciente: ").strip()
+
+            novo_dia = input("Novo dia da consulta: ").strip()
+            while(novo_dia.isdigit() == False):
+                print("INVÁLIDO! Insira o dia da consulta (apenas números)")
+                novo_dia = input("Novo dia da consulta: ").strip()
+
+            novo_mes = input("Novo mês da consulta: ").strip()
+            while(novo_mes.isdigit() == False):
+                print("INVÁLIDO! Insira o mês da consulta (apenas números)")
+                novo_mes = input("Novo mês da consulta: ").strip()
+
+            novo_ano = input("Novo ano da consulta: ").strip()
+            while(novo_ano.isdigit() == False):
+                print("INVÁLIDO! Insira o ano da consulta (apenas números)")
+                novo_ano = input("Novo ano da consulta: ").strip()
+
+            nova_dataconsulta = f'{novo_dia}/{novo_mes}/{novo_ano}'
+
+            print("Consulta atualizada com sucesso!")
+            medico['medico'] = novo_nomemedico
+            medico['paciente'] = novo_nomepaciente
+            medico['data'] = nova_dataconsulta
+            break  
+    if not encontrado:
+        print("ID não encontrado. Não é possível alterar o cadastro.")
+    gerenciador_dados.salvar_dados(banco_consulta, ARQUIVO_CONSULTA)
 
 def excluir_consulta():
     ...
