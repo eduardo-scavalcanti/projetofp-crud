@@ -13,7 +13,7 @@ def menu_medicos():
 
 
 
-        opcaomedico = int(input("Opção: ")) 
+        opcaomedico = int(input("Opção: ")) # Fazer validação para caso o usuário digitar uma letra ou caractere especial. (copiar de Tiago)
         while opcaomedico < 0 or opcaomedico > 4:
             print("ERRO! Opção inválida.")
             opcaomedico = (input("Opção: "))
@@ -29,7 +29,7 @@ def menu_medicos():
                 case 4:
                     medicos.excluir_medico()
                 case 0:
-                    menu_principal()
+                    break
                     
        
         
@@ -44,7 +44,7 @@ def menu_pacientes():
 
 
 
-        opcaopaciente = int(input("Opção: ")) 
+        opcaopaciente = int(input("Opção: ")) # Fazer validação para caso o usuário digitar uma letra ou caractere especial. (copiar de Tiago)
         while opcaopaciente < 0 or opcaopaciente > 4:
             print("ERRO! Opção inválida.")
             opcaopaciente = int(input("Opção: "))
@@ -59,7 +59,7 @@ def menu_pacientes():
                 case 4:
                     pacientes.excluir_paciente()
                 case 0:
-                    menu_principal()
+                    menu_principal() #break
 
 
 def menu_consultas():
@@ -72,10 +72,10 @@ def menu_consultas():
 
 
 
-        opcaoconsulta = int(input("Opção: ")) 
+        opcaoconsulta = int(input("Opção: ")) # Fazer validação para caso o usuário digitar uma letra ou caractere especial. (copiar de Tiago)
         while opcaoconsulta < 0 or opcaoconsulta > 4:
             print("ERRO! Opção inválida.")
-            opcaoconsulta = int(input("Opção: "))
+            opcaoconsulta = int(input("Opção: ")) 
 
         match(opcaoconsulta): 
                 case 1:
@@ -87,7 +87,7 @@ def menu_consultas():
                 case 4:
                     consultas.excluir_consulta()
                 case 0:
-                    menu_principal()
+                    menu_principal() #break
           
 
 def menu_relatorios():
@@ -98,7 +98,7 @@ def menu_relatorios():
 
 
 
-        opcaorelatorio = int(input("Opção: ")) 
+        opcaorelatorio = int(input("Opção: ")) # Fazer validação para caso o usuário digitar uma letra ou caractere especial. (copiar de Tiago)
         while opcaorelatorio < 0 or opcaorelatorio > 2:
             print("ERRO! Opção invalida.")
             opcaorelatorio = int(input("Opção: "))
@@ -109,7 +109,7 @@ def menu_relatorios():
                 case 2:
                   relatorios.relatorio_medicos()   
                 case 0:
-                    menu_principal()
+                    menu_principal() #break
 
 
 def menu_principal():
@@ -122,10 +122,10 @@ def menu_principal():
 
 
 
-        opcao = int(input("Opção: ")) 
+        opcao = int(input("Opção: ")) # Fazer validação para caso o usuário digitar uma letra ou caractere especial. (copiar de Tiago)
         while opcao < 0 or opcao > 4:
             print("ERRO! Opção inválida.")
-            opcao = int(input("Opção: "))
+            opcao = int(input("Opção: ")) # Fazer validação para caso o usuário digitar uma letra ou caractere especial. (copiar de Tiago)
 
         match(opcao): 
                 case 1:
@@ -135,7 +135,7 @@ def menu_principal():
                 case 3:
                   menu_consultas()    
                 case 4:
-                    menu_relatorios()
+                  menu_relatorios()
                 case 0:
                     break
-menu_principal()            
+menu_principal()
