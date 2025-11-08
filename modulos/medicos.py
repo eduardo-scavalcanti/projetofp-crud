@@ -2,8 +2,6 @@ import gerenciador_dados
 ARQUIVOMEDICO = "medicos.json" 
 
 def cadastrar_medico():
-    print("CADASTRAR MÉDICO")
-
     nome_medico = input("Nome: ").strip()
     while(nome_medico.replace(" ", "").isalpha() == False):
         print("INVÁLIDO! Insira um NOME (apenas letras).")
