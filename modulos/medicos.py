@@ -1,5 +1,5 @@
 import gerenciador_dados
-ARQUIVOMEDICO = "medicos.json" 
+ARQUIVO_MEDICO = "medicos.json" 
 
 def cadastrar_medico():
     nome_medico = input("Nome: ").strip()
@@ -17,7 +17,7 @@ def cadastrar_medico():
         print("INVÁLIDO! Insira a especialidade do médico(apenas texto)")
         especialidade_medico = input("Especialidade: ").strip()
 
-    banco_medico = gerenciador_dados.carregar_dados(ARQUIVOMEDICO)
+    banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
 
     medico = {}
 
@@ -31,85 +31,97 @@ def cadastrar_medico():
 
     banco_medico.append(medico)
 
-    gerenciador_dados.salvar_dados(medico, ARQUIVOMEDICO)
+    gerenciador_dados.salvar_dados(medico, ARQUIVO_MEDICO)
     
     print("Médico cadastrado com sucesso!")
 
 
 def info_medico():
-    bancomedico = gerenciador_dados.carregar_dados(ARQUIVOMEDICO)
-    print("\n=== INFORMAÇÕES DOS MÉDICOS CADASTRADOS ===")
-    if len(bancomedico) == 0:
-        print("Nenhum médico cadastrado.")
+    banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
+
+    if len(banco_medico) == 0:
+        print("Não há médicos cadastrados.")
         return
     else:
-        id_busca = input("\nDigite o ID do médico: ")
+        id_busca = input("Digite o id do médico: ").strip()
         while(id_busca.isdigit() == False):
             print("INVÁLIDO. Insira um ID válido (apenas números)")
-            id_busca = input("\nDigite o ID do médico: ")
+            id_busca = input("Digite o id do médico: ").strip()
         id_busca = int(id_busca)
-    for medico in bancomedico:
-            if medico["id"] == id_busca:
-                print("--- Dados do Médico: ---")
-                print(f"ID: {medico['id']}")
-                print(f"Nome: {medico['nome']}")
-                print(f"CRM: {medico['crm']}")
-                print(f"Especialidade: {medico['especialidade']}")
-                return
-            else:
-                print("Médico não encontrado.")
-                return
+        
+    for medico in banco_medico:
+        if medico["id"] == id_busca:
+            print(f"\nID: {medico['id']}")
+            print(f"Nome: {medico['nome']}")
+            print(f"CRM: {medico['crm']}")
+            print(f"Especialidade: {medico['especialidade']}")
+            return
+        
+    print("Médico não encontrado.")
 
 
 def alterar_medico():
-    bancomedico = gerenciador_dados.carregar_dados(ARQUIVOMEDICO)
-    print("=== ALTERAR O CADASTRO DE UM MÉDICO ===")
-    id_alterado = input("Digite o ID do médico que você quer alterar: ")
-    while(id_alterado.isdigit() == False):
-        print("INVÁLIDO. Insira um ID válido (apenas números)")
-        id_alterado = input("Digite o ID do médico que você quer alterar: ")
-    id_alterado = int(id_alterado)
-    encontrado = False 
-    for medico in bancomedico:
-        if medico["id"] == id_alterado:
-            encontrado = True  
-            novo_nome = input("Novo nome: ").strip()
-            while(novo_nome.replace(" ", "").isalpha() == False):
-                print("INVÁLIDO! Insira um NOME (apenas letras)")
-                novo_nome = input("Novo nome: ").strip()
-            novo_crm = input("Novo CRM: ").strip()
-            while(novo_crm.isdigit() == False):
-                print("INVÁLIDO. Insira um CRM (apenas números)")
-                novo_crm = input("Novo CRM: ").strip()
-            nova_especialidade = input("Nova especialidade: ").strip()
-            while(nova_especialidade.replace(" ", "").isalpha() == False):
-                print("INVÁLIDO! Insira a especialidade do médico (apenas texto)")
-                nova_especialidade = input("Nova especialidade: ").strip()
-            print("Médico atualizado com sucesso!")
-            medico["nome"] = novo_nome
-            medico["crm"] = novo_crm
-            medico["especialidade"] = nova_especialidade
-            break  
-    if not encontrado:
-        print("ID não encontrado. Não é possível alterar o cadastro.")
-    gerenciador_dados.salvar_dados(bancomedico, ARQUIVOMEDICO)
+    banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
+
+    if len(banco_medico) == 0:
+        print("Não há médicos cadastrados.")
+        return
+    else:
+        id_alterado = input("Digite o id do médico: ").strip()
+        while(id_alterado.isdigit() == False):
+            print("INVÁLIDO. Insira um ID válido (apenas números)")
+            id_alterado = input("Digite o id do médico: ").strip()
+        id_alterado = int(id_alterado)
+
+        for medico in banco_medico:
+            if medico["id"] == id_alterado:
+                novo_nome = input("Nome: ").strip()
+                while(novo_nome.replace(" ", "").isalpha() == False):
+                    print("INVÁLIDO! Insira um NOME (apenas letras).")
+                    novo_nome = input("Nome do médico: ").strip()
+
+                novo_crm = input("CRM: ").strip()
+                while(novo_crm.isdigit() == False):
+                    print("INVÁLIDO. Insira um CRM (apenas números).")
+                    novo_crm = input("CRM do médico: ").strip()
+
+                nova_especialidade = input("Especialidade: ").strip()
+                while(nova_especialidade.isalpha() == False):
+                    print("INVÁLIDO! Insira a especialidade do médico(apenas texto)")
+                    nova_especialidade = input("Especialidade: ").strip()
+                
+                medico['nome'] = novo_nome
+                medico['crm'] = novo_crm
+                medico['especialidade'] = nova_especialidade
+                
+                gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
+
+                print("Médico atualizado com sucesso!")
+                return
+            
+        print("Médico não encontrado.")
 
 
 def excluir_medico():
-    bancomedico = gerenciador_dados.carregar_dados(ARQUIVOMEDICO)
-    if len(bancomedico)==0:
-        print("Não Há Médicos cadastrados nesse banco.")
+    banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
+
+    if len(banco_medico) == 0:
+        print("Não há médicos cadastrados.")
         return
     else:
-        id_excluido = input("Digite o ID você quer excluir: ")
+        id_excluido = input("Digite o id do médico: ").strip()
         while(id_excluido.isdigit() == False):
-            print("INVÁLIDO. Insira um CRM (apenas números)")
-            id_excluido = input("Digite o ID você quer excluir: ")
+            print("INVÁLIDO. Insira um ID válido (apenas números)")
+            id_excluido = input("Digite o id do médico: ").strip()
         id_excluido = int(id_excluido)
-        for medico in bancomedico:
+
+        for medico in banco_medico:
             if(medico["id"] == id_excluido):
-                bancomedico.remove(medico)
-                print("Médico excluido com sucesso!!")
-                bancomedico = gerenciador_dados.salvar_dados(ARQUIVOMEDICO, bancomedico)
+                banco_medico.remove(medico)
+
+                gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
+                
+                print("Médico excluído com sucesso!")
                 return
-        print("Médico Não encontrado. Não é possível excluir.")
+            
+        print("Médico não encontrado.")
