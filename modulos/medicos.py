@@ -2,33 +2,40 @@ import gerenciador_dados
 ARQUIVOMEDICO = "medicos.json" 
 
 def cadastrar_medico():
-    nomemedico = str(input("Digite o nome do Médico: "))
-    while(nomemedico.replace(" ", "").isalpha()== False):
-        print("INVÁLIDO! Insira um NOME(apenas letras)")
-        nomemedico = str(input("Digite o nome do Médico: "))
-    crmmedico = input("Digite o CRM do Médico: ")
-    while(crmmedico.isdigit() == False):
-        print("INVÁLIDO. Insira um CRM (apenas números)")
-        crmmedico = input("Digite o CRM do Médico: ")
-    crmmedico = int(crmmedico)
-    especialidademedico = str(input("Digite a especialidade do médico: "))
-    while(especialidademedico.isalpha() == False):
+    print("CADASTRAR MÉDICO")
+
+    nome_medico = input("Nome: ").strip()
+    while(nome_medico.replace(" ", "").isalpha() == False):
+        print("INVÁLIDO! Insira um NOME (apenas letras).")
+        nome_medico = input("Nome do médico: ").strip()
+
+    crm_medico = input("CRM: ").strip()
+    while(crm_medico.isdigit() == False):
+        print("INVÁLIDO. Insira um CRM (apenas números).")
+        crm_medico = input("CRM do médico: ").strip()
+
+    especialidade_medico = input("Especialidade: ").strip()
+    while(especialidade_medico.isalpha() == False):
         print("INVÁLIDO! Insira a especialidade do médico(apenas texto)")
-        especialidademedico = str(input("Digite a especialidade do médico: "))
+        especialidade_medico = input("Especialidade: ").strip()
 
-    bancomedico = gerenciador_dados.carregar_dados()
+    banco_medico = gerenciador_dados.carregar_dados(ARQUIVOMEDICO)
+
     medico = {}
-    if len(bancomedico) == 0:
-        medico["id"] = 1
-    else:
-       medico["id"] = bancomedico[len(bancomedico)-1]["id"]+1
-    medico["nome"] = nomemedico 
-    medico["crm"] = crmmedico
-    medico["especialidade"] = especialidademedico
-    print(bancomedico)
-    gerenciador_dados.salvar_dados(medico, ARQUIVOMEDICO)
-    print("Médico Cadastrado com sucesso!!")
 
+    if len(banco_medico) == 0:
+        medico['id'] = 1
+    else:
+       medico['id'] = banco_medico[len(banco_medico) - 1]['id'] + 1
+    medico['nome'] = nome_medico 
+    medico['crm'] = crm_medico
+    medico['especialidade'] = especialidade_medico
+
+    banco_medico.append(medico)
+
+    gerenciador_dados.salvar_dados(medico, ARQUIVOMEDICO)
+    
+    print("Médico cadastrado com sucesso!")
 
 
 def info_medico():
