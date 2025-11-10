@@ -17,7 +17,7 @@ def relatorio_medicos():
         for m in banco_medicos:
             consultas = 0
             for c in banco_consultas:
-                if m['id'] == c['medicoid']: # Alterar chave do médico
+                if m['id'] == c['id']: # Alterar chave do médico
                     consultas += 1
             print('-' * 6, "RELATÓRIO", '-' * 6)
             print(f"id: {m['id']}")
