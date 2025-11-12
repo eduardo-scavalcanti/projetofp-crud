@@ -31,7 +31,7 @@ def cadastrar_medico():
 
     banco_medico.append(medico)
 
-    gerenciador_dados.salvar_dados(medico, ARQUIVO_MEDICO)
+    gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
     
     print("Médico cadastrado com sucesso!")
 
