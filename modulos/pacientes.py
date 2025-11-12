@@ -1,4 +1,4 @@
-from .. import gerenciador_dados
+import gerenciador_dados
 
 ARQUIVO_PACIENTES = "pacientes.json"
 
