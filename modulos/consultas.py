@@ -1,5 +1,5 @@
 from datetime import datetime
-from .. import gerenciador_dados
+import gerenciador_dados
 
 ARQUIVO_MEDICO = "medicos.json"
 ARQUIVO_PACIENTE = "pacientes.json"
