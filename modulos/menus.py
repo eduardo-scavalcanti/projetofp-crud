@@ -135,9 +135,9 @@ def menu_relatorios():
 
     match(opcao_relatorio): 
       case 1:
-        relatorios.relatorio_data()
+        relatorios.relatorio_medicos()
       case 2:
-        relatorios.relatorio_medicos()   
+        relatorios.relatorio_data() 
       case 0:
         break
 
