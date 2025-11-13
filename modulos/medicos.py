@@ -7,9 +7,9 @@ def cadastrar_medico():
 
     banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
     
-    crm_medico = input("CRM (NNNNNN-UF): ").replace(" ", "").upper()
+    crm_medico = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
     while validacoes.validar_crm(crm_medico) == False:
-        crm_medico = input("CRM (NNNNNN-UF): ").replace(" ", "").upper()
+        crm_medico = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
 
     for medico in banco_medico:
         if crm_medico == medico['crm']:
@@ -69,9 +69,9 @@ def info_medico():
         print("ERRO! Não há médicos cadastrados.")
         return
     else:
-        crm_busca = input("Digite o CRM do médico que você deseja verificar (NNNNNN-UF): ").replace(" ", "").upper()
+        crm_busca = input("Digite o CRM do médico que você deseja verificar (XXXXXX/UF): ").replace(" ", "").upper()
         while validacoes.validar_crm(crm_busca) == False:
-            crm_busca = input("Digite o CRM do médico que você deseja verificar (NNNNNN-UF): ").replace(" ", "").upper()
+            crm_busca = input("Digite o CRM do médico que você deseja verificar (XXXXXX/UF): ").replace(" ", "").upper()
         
     for medico in banco_medico:
         if medico['crm'] == int(crm_busca):
@@ -96,16 +96,16 @@ def alterar_medico():
         print("ERRO! Não há médicos cadastrados.")
         return
     else:
-        crm_alterado = input("Digite o CRM do médico que você deseja alterar (NNNNNN/UF): ").replace(" ", "").upper()
+        crm_alterado = input("Digite o CRM do médico que você deseja alterar (XXXXXX/UF): ").replace(" ", "").upper()
         while validacoes.validar_crm(crm_alterado) == False:
-            crm_alterado = input("Digite o CRM do médico que você deseja alterar (NNNNNN/UF): ").replace(" ", "").upper()
+            crm_alterado = input("Digite o CRM do médico que você deseja alterar (XXXXXX/UF): ").replace(" ", "").upper()
 
         for medico in banco_medico:
             if medico['crm'] == crm_alterado:
 
-                novo_crm = input("CRM (NNNNNN-UF): ").replace(" ", "").upper()
+                novo_crm = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
                 while validacoes.validar_crm(novo_crm) == False:
-                    novo_crm = input("CRM (NNNNNN-UF): ").replace(" ", "").upper()
+                    novo_crm = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
 
                     for m in banco_medico:
                         if novo_crm == m['crm']:
