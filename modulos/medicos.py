@@ -20,6 +20,10 @@ def cadastrar_medico():
     while validacoes.validar_nome(nome_medico) == False:
         nome_medico = input("Nome: ").strip().title()
 
+    sexo_medico = input("Sexo (M/F): ").replace(" ", "").upper()
+    while validacoes.validar_sexo(sexo_medico) == False:
+        sexo_medico = input("Sexo (M/F): ").replace(" ", "").upper()
+
     especialidade_medico = input("Especialidade: ").strip().title()
     while validacoes.validar_especialidade(especialidade_medico) == False:
         especialidade_medico = input("Especialidade: ").strip().title()
@@ -42,8 +46,9 @@ def cadastrar_medico():
         medico['id'] = 1
     else:
        medico['id'] = banco_medico[len(banco_medico) - 1]['id'] + 1
-    medico['nome'] = nome_medico 
     medico['crm'] = crm_medico
+    medico['nome'] = nome_medico
+    medico['sexo'] = sexo_medico
     medico['especialidade'] = especialidade_medico
     medico['data_nascimento'] = data_nascimento_medico
     medico['email'] = email_medico
@@ -71,8 +76,9 @@ def info_medico():
     for medico in banco_medico:
         if medico['crm'] == int(crm_busca):
             print(f"\nID: {medico['id']}")
-            print(f"Nome: {medico['nome']}")
             print(f"CRM: {medico['crm']}")
+            print(f"Nome: {medico['nome']}")
+            print(f"Sexo: {medico['sexo']}")
             print(f"Especialidade: {medico['especialidade']}")
             print(f"Data de nascimento: {medico['data_nascimento']}")
             print(f"E-mail: {medico['email']}")
@@ -110,6 +116,10 @@ def alterar_medico():
                 while validacoes.validar_nome(novo_nome) == False:
                     novo_nome = input("Nome: ").strip().title()
 
+                novo_sexo = input("Sexo (M/F): ").replace(" ", "").upper()
+                while validacoes.validar_sexo(novo_sexo) == False:
+                    novo_sexo = input("Sexo (M/F): ").replace(" ", "").upper()
+
                 nova_especialidade = input("Especialidade: ").strip().title()
                 while validacoes.validar_especialidade(nova_especialidade) == False:
                     nova_especialidade = input("Especialidade: ").strip().title()
@@ -128,8 +138,9 @@ def alterar_medico():
                 
                 medico = {}
 
-                medico['nome'] = novo_nome
                 medico['crm'] = novo_crm
+                medico['nome'] = novo_nome
+                medico['sexo'] = novo_sexo
                 medico['especialidade'] = nova_especialidade
                 medico['data_nascimento'] = nova_data_nascimento
                 medico['email'] = novo_email
