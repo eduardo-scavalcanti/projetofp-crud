@@ -1,33 +1,53 @@
 from datetime import datetime
 import re
 
+def validar_id(id):
+    if id == "":
+        print("ERRO! Campo em branco.")
+        return False
+
+    try:
+        int(id)
+    except ValueError:
+        print("ERRO! Digite apenas números inteiros.")
+        return False
+    
+    if int(id) <= 0:
+        print("ERRO! Id menor ou igual a zero.")
+        return False
+    
+
 def validar_nome(nome):
-    # input com .strip()
     if nome == "":
         print("ERRO! Campo em branco.")
         return False
-    
+
+    if not nome.replace(" ", "").isalpha():
+        print("ERRO! Digite apenas letras.")
+        return False
+
     return True
 
 
 def validar_idade(idade):
-    # input com replace(" ", "")
     if idade == "":
         print("ERRO! Campo vazio.")
         return False
     
     try:
         int(idade)
-        return True
     except ValueError:
         print("ERRO! Digite apenas números inteiros.")
+        return False
+    
+    if int(idade) <= 0:
+        print("ERRO! Idade menor ou igual a zero.")
         return False
 
 
 def validar_data_nascimento(data):
-    # input com replace(" ", "")
     if data == "":
-        print("ERRO! Campo vazio")
+        print("ERRO! Campo vazio.")
         return False
     
     padrao = r"^\d{2}/\d{2}/\d{4}$"
@@ -37,18 +57,22 @@ def validar_data_nascimento(data):
         print("Ex.: 19/02/2017")
         return False
     
-    hoje = f"{datetime.now().day}/{datetime.now().month}/{datetime.now().year}"
+    hoje = datetime.now().date()
+    
+    try:
+        data_datetime = datetime.strptime(data, "%d/%m/%Y").date()
+    except ValueError:
+        print("ERRO! Data inválida.")
+        return False
 
-    if data > hoje:
-        print("ERRO! Data inválida")
-        print("A data deve ser igual ou menor que a de hoje.")
+    if data_datetime > hoje:
+        print("ERRO! A data deve ser igual ou menor que a de hoje.")
         return False
     
     return True
 
 
 def validar_data_consulta(data):
-    # input com replace(" ", "")
     if data == "":
         print("ERRO! Campo vazio.")
         return False
@@ -60,18 +84,21 @@ def validar_data_consulta(data):
         print("Ex.: 01/01/2031")
         return False
     
-    hoje = f"{datetime.now().day}/{datetime.now().month}/{datetime.now().year}"
-
-    if data < hoje:
-        print("ERRO! Data inválida")
-        print("A data deve ser igual ou maior que a de hoje.")
+    hoje = datetime.now().date()
+    try:
+        data_datetime = datetime.strptime(data, "%d/%m/%Y").date()
+    except ValueError:
+        print("ERRO! Data inválida.")
+        return False
+    
+    if data_datetime < hoje:
+        print("ERRO! A data deve ser igual ou maior que a de hoje.")
         return False
     
     return True
     
 
 def validar_crm(crm):
-    # input com replace(" ", "")
     if crm == "":
         print("ERRO! Campo vazio.")
         return False
@@ -87,7 +114,6 @@ def validar_crm(crm):
     
 
 def validar_cpf(cpf):
-    # input com replace(" ", "")
     if cpf == "":
         print("ERRO! Campo vazio.")
         return False
@@ -107,23 +133,20 @@ def validar_cpf(cpf):
 
 
 def validar_email(email):
-    # input com replace(" ","")
     if email == "":
         print("ERRO! Campo vazio.")
         return False
 
-    padrao = r"^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2}$"
+    padrao = r"^[a-z0-9\._-]+@[a-z0-9]+\.[a-z]{2,}\.?([a-z]{2,})?"
 
     if not re.fullmatch(padrao, email):
         print("ERRO! Formato incorreto.")
-        print("Ex.: email@gmail.com")
         return False
     
     return True
 
 
 def validar_numero(numero):
-    # input replace(" ", "")
     if numero == "":
         print("ERRO! Campo vazio.")
         return False
@@ -132,7 +155,31 @@ def validar_numero(numero):
 
     if not re.fullmatch(padrao, numero):
         print("ERRO! Formato incorreto.")
-        print("Ex.: (81)99999-9999")
         return False
 
     return True
+
+
+def validar_especialidade(especialidade):
+    if especialidade == "":
+        print("ERRO! Campo em branco.")
+        return False
+
+    if not especialidade.replace(" ", "").isalpha():
+        print("ERRO! Digite apenas letras.")
+        return False
+
+    return True
+
+
+def validar_sexo(sexo):
+    if sexo == "":
+        print("ERRO! Campo em branco.")
+        return False
+    
+    if sexo[0] not in "MF":
+        print("ERRO! Sexo inválido.")
+        return False
+    
+    return True
+    

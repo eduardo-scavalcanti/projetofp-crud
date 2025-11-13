@@ -1,21 +1,35 @@
 import gerenciador_dados
+from . import validacoes
+
 ARQUIVO_MEDICO = "medicos.json" 
 
 def cadastrar_medico():
-    nome_medico = input("Nome: ").strip()
-    while(nome_medico.replace(" ", "").isalpha() == False):
-        print("INVÁLIDO! Insira um NOME (apenas letras).")
-        nome_medico = input("Nome do médico: ").strip()
+    
+    nome_medico = input("Nome: ").strip().title()
+    while validacoes.validar_nome(nome_medico) == False:
+        nome_medico = input("Nome: ").strip().title()
 
-    crm_medico = input("CRM: ").strip()
-    while(crm_medico.isdigit() == False):
-        print("INVÁLIDO. Insira um CRM (apenas números).")
-        crm_medico = input("CRM do médico: ").strip()
+    crm_medico = input("CRM (999999/UF): ").replace(" ", "").upper()
+    while validacoes.validar_crm(crm_medico) == False:
+        crm_medico = input("CRM (999999/UF): ").replace(" ", "").upper()
 
-    especialidade_medico = input("Especialidade: ").strip()
-    while(especialidade_medico.isalpha() == False):
-        print("INVÁLIDO! Insira a especialidade do médico(apenas texto)")
-        especialidade_medico = input("Especialidade: ").strip()
+
+    especialidade_medico = input("Especialidade: ").strip().title()
+    while validacoes.validar_especialidade(especialidade_medico) == False:
+        especialidade_medico = input("Especialidade: ").strip().title()
+
+    data_nascimento_medico = input("Data de nascimento (DD/MM/AAAA): ").replace(" ", "")
+    while validacoes.validar_data_nascimento(data_nascimento_medico) == False:
+        data_nascimento_medico = input("Data de nascimento (DD/MM/AAAA): ").replace(" ", "")
+
+    email_medico = input("E-mail (email@gmail.com): ").replace(" ", "").lower()
+    while validacoes.validar_email(email_medico) == False:
+        email_medico = input("E-mail (email@gmail.com): ").replace(" ", "")
+
+    numero_medico = input("Telefone (99)99999-9999: ").replace(" ", "")
+    while validacoes.validar_numero(numero_medico) == False:
+        numero_medico = input("Telefone (99)99999-9999: ").replace(" ", "")
+
 
     banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
 
@@ -28,29 +42,31 @@ def cadastrar_medico():
     medico['nome'] = nome_medico 
     medico['crm'] = crm_medico
     medico['especialidade'] = especialidade_medico
+    medico['data_nascimento'] = data_nascimento_medico
+    medico['email'] = email_medico
+    medico['numero'] = numero_medico
 
     banco_medico.append(medico)
 
     gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
-    
-    print("Médico cadastrado com sucesso!")
+
+    print("\n\033[1;32mMédico criado com sucesso.\033[0;0m")
 
 
 def info_medico():
+
     banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
 
     if len(banco_medico) == 0:
         print("Não há médicos cadastrados.")
         return
     else:
-        id_busca = input("Digite o id do médico: ").strip()
-        while(id_busca.isdigit() == False):
-            print("INVÁLIDO. Insira um ID válido (apenas números)")
-            id_busca = input("Digite o id do médico: ").strip()
-        id_busca = int(id_busca)
+        id_busca = input("Digite o id do médico: ").replace(" ", "")
+        while validacoes.validar_id(id_busca) == False:
+            id_busca = input("Digite o id do médico: ").replace(" ", "")
         
     for medico in banco_medico:
-        if medico["id"] == id_busca:
+        if medico["id"] == int(id_busca):
             print(f"\nID: {medico['id']}")
             print(f"Nome: {medico['nome']}")
             print(f"CRM: {medico['crm']}")
@@ -61,33 +77,30 @@ def info_medico():
 
 
 def alterar_medico():
+
     banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
 
     if len(banco_medico) == 0:
         print("Não há médicos cadastrados.")
         return
     else:
-        id_alterado = input("Digite o id do médico: ").strip()
-        while(id_alterado.isdigit() == False):
-            print("INVÁLIDO. Insira um ID válido (apenas números)")
-            id_alterado = input("Digite o id do médico: ").strip()
-        id_alterado = int(id_alterado)
+        id_alterado = input("Digite o id do médico: ").replace(" ", "")
+        while validacoes.validar_id(id_alterado) == False:
+            id_alterado = input("Digite o id do médico: ").replace(" ", "")
 
         for medico in banco_medico:
-            if medico["id"] == id_alterado:
-                novo_nome = input("Nome: ").strip()
-                while(novo_nome.replace(" ", "").isalpha() == False):
-                    print("INVÁLIDO! Insira um NOME (apenas letras).")
-                    novo_nome = input("Nome do médico: ").strip()
+            if medico["id"] == int(id_alterado):
 
-                novo_crm = input("CRM: ").strip()
-                while(novo_crm.isdigit() == False):
-                    print("INVÁLIDO. Insira um CRM (apenas números).")
-                    novo_crm = input("CRM do médico: ").strip()
+                novo_nome = input("Nome: ").strip()
+                while validacoes.validar_nome(novo_nome) == False:
+                    novo_nome = input("Nome: ").strip()
+
+                novo_crm = input("CRM: ").replace(" ", "")
+                while validacoes.validar_crm(novo_crm) == False:
+                    novo_crm = input("CRM: ").replace(" ", "")
 
                 nova_especialidade = input("Especialidade: ").strip()
-                while(nova_especialidade.isalpha() == False):
-                    print("INVÁLIDO! Insira a especialidade do médico(apenas texto)")
+                while validacoes.validar_especialidade(nova_especialidade) == False:
                     nova_especialidade = input("Especialidade: ").strip()
                 
                 medico['nome'] = novo_nome
@@ -95,33 +108,29 @@ def alterar_medico():
                 medico['especialidade'] = nova_especialidade
                 
                 gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
-
-                print("Médico atualizado com sucesso!")
                 return
             
         print("Médico não encontrado.")
 
 
 def excluir_medico():
+
     banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
 
     if len(banco_medico) == 0:
         print("Não há médicos cadastrados.")
         return
     else:
-        id_excluido = input("Digite o id do médico: ").strip()
-        while(id_excluido.isdigit() == False):
-            print("INVÁLIDO. Insira um ID válido (apenas números)")
-            id_excluido = input("Digite o id do médico: ").strip()
-        id_excluido = int(id_excluido)
+        id_excluido = input("Digite o id do médico: ").replace(" ", "")
+        while validacoes.validar_id(id_excluido) == False:
+            id_excluido = input("Digite o id do médico: ").replace(" ", "")
 
         for medico in banco_medico:
-            if(medico["id"] == id_excluido):
+            if medico["id"] == int(id_excluido):
+
                 banco_medico.remove(medico)
 
                 gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
-                
-                print("Médico excluído com sucesso!")
                 return
             
         print("Médico não encontrado.")
