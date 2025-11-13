@@ -3,6 +3,7 @@ from . import pacientes
 from . import consultas
 from . import relatorios
 
+
 def menu_medicos():
   while True:
     print("1 - Cadastrar médico")
@@ -12,10 +13,10 @@ def menu_medicos():
     print("0 - Voltar para o menu principal ")
 
     while True:
-      opcao_medico = input("Opção: ").strip()
+      opcao_medico = input("Opção: ").replace(" ", "")
 
       if not opcao_medico.isdigit():
-          print("Digite apenas números.")
+          print("ERRO ! Digite apenas números.")
           continue
 
       opcao_medico_int = int(opcao_medico)
@@ -24,7 +25,7 @@ def menu_medicos():
           opcao_medico = opcao_medico_int
           break
       else:
-          print("Opção inválida.")
+          print("ERRO! Opção inválida.")
 
     match(opcao_medico): 
       case 1:
@@ -49,10 +50,10 @@ def menu_pacientes():
 
     
     while True:
-      opcao_paciente = input("Opção: ").strip()
+      opcao_paciente = input("Opção: ").replace(" ", "")
 
       if not opcao_paciente.isdigit():
-          print("Digite apenas números.")
+          print("ERRO! Digite apenas números.")
           continue
 
       opcao_paciente_int = int(opcao_paciente)
@@ -61,7 +62,7 @@ def menu_pacientes():
           opcao_paciente = opcao_paciente_int
           break
       else:
-          print("Opção inválida.")
+          print("ERRO! Opção inválida.")
 
     match(opcao_paciente): 
       case 1:
@@ -85,10 +86,10 @@ def menu_consultas():
     print("0 - Voltar para o menu principal ")
 
     while True:
-      opcao_consulta = input("Opção: ").strip()
+      opcao_consulta = input("Opção: ").replace(" ", "")
 
       if not opcao_consulta.isdigit():
-          print("Digite apenas números.")
+          print("ERRO! Digite apenas números.")
           continue
 
       opcao_consulta_int = int(opcao_consulta)
@@ -97,7 +98,7 @@ def menu_consultas():
           opcao_consulta = opcao_consulta_int
           break
       else:
-          print("Opção inválida.")
+          print("ERRO! Opção inválida.")
 
     match(opcao_consulta): 
       case 1:
@@ -119,10 +120,10 @@ def menu_relatorios():
     print("0 - Voltar para o menu principal ")
 
     while True:
-      opcao_relatorio = input("Opção: ").strip()
+      opcao_relatorio = input("Opção: ").replace(" ", "")
 
       if not opcao_relatorio.isdigit():
-          print("Digite apenas números.")
+          print("ERRO! Digite apenas números.")
           continue
 
       opcao_relatorio_int = int(opcao_relatorio)
@@ -131,7 +132,7 @@ def menu_relatorios():
           opcao_relatorio = opcao_relatorio_int
           break
       else:
-          print("Opção inválida.")
+          print("ERRO! Opção inválida.")
 
     match(opcao_relatorio): 
       case 1:
@@ -151,10 +152,10 @@ def menu_principal():
     print("0 - Encerrar o Programa ")
 
     while True:
-      opcao = input("Opção: ").strip()
+      opcao = input("Opção: ").replace(" ", "")
 
       if not opcao.isdigit():
-          print("Digite apenas números.")
+          print("ERRO! Digite apenas números.")
           continue
 
       opcao_int = int(opcao)
@@ -163,7 +164,7 @@ def menu_principal():
           opcao = opcao_int
           break
       else:
-          print("Opção inválida.")
+          print("ERRO! Opção inválida.")
 
     match(opcao): 
       case 1:
