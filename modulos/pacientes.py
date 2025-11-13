@@ -1,4 +1,5 @@
 import gerenciador_dados
+from . import mensagens
 from . import validacoes
 
 ARQUIVO_PACIENTES = "pacientes.json"
@@ -58,7 +59,7 @@ def cadastrar_paciente():
 
     gerenciador_dados.salvar_dados(ARQUIVO_PACIENTES, banco_pacientes)
 
-    print("\n\033[1;32mPaciente cadastrado com sucesso.\033[0;0m")
+    mensagens.sucesso("Paciente cadastrado com sucesso.")
 
 
 def info_paciente():
@@ -66,7 +67,7 @@ def info_paciente():
     banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTES)
 
     if len(banco_pacientes) == 0:
-        print("ERRO! Não há pacientes cadastrados.")
+        mensagens.erro("ERRO! Não há pacientes cadastrados.")
         return
     else:
         cpf = input("Digite o CPF do paciente que você deseja verificar (XXXXXXXXXXX): ").replace(" ", "")
@@ -75,23 +76,23 @@ def info_paciente():
 
         for paciente in banco_pacientes:
             if paciente['cpf'] == cpf:
-                print(f"ID: {paciente['id']}")
-                print(f"CPF: {paciente['cpf']}")
-                print(f"Nome: {paciente['nome']}")
-                print(f"Sexo: {paciente['sexo']}")
-                print(f"Data de nascimento: {paciente['data_nascimento']}")
-                print(f"E-mail: {paciente['email']}")
-                print(f"Celular: {paciente['numero']}")
+                mensagens.info(f"ID: {paciente['id']}")
+                mensagens.info(f"CPF: {paciente['cpf']}")
+                mensagens.info(f"Nome: {paciente['nome']}")
+                mensagens.info(f"Sexo: {paciente['sexo']}")
+                mensagens.info(f"Data de nascimento: {paciente['data_nascimento']}")
+                mensagens.info(f"E-mail: {paciente['email']}")
+                mensagens.info(f"Celular: {paciente['numero']}")
                 return
             
-        print("ERRO! Paciente não encontrado.")
+        mensagens.erro("ERRO! Paciente não encontrado.")
 
 def alterar_paciente():
 
     banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTES)
 
     if len(banco_pacientes) == 0:
-        print("ERRO! Não há pacientes cadastrados.")
+        mensagens.erro("ERRO! Não há pacientes cadastrados.")
         return
     else: 
         cpf = input("Digite o CPF do paciente que você deseja alterar (XXXXXXXXXXX): ").replace(" ", "")
@@ -107,7 +108,7 @@ def alterar_paciente():
             
             for paciente in banco_pacientes:
                 if novo_cpf == paciente['cpf']:
-                    print("ERRO! Já existe um paciente cadastrado com esse CPF.")
+                    mensagens.erro("ERRO! Já existe um paciente cadastrado com esse CPF.")
                     return False
 
             paciente = {}
@@ -147,14 +148,14 @@ def alterar_paciente():
             gerenciador_dados.salvar_dados(ARQUIVO_PACIENTES, banco_pacientes)
             return
         
-    print("ERRO! Paciente não encontrado.")
+    mensagens.erro("ERRO! Paciente não encontrado.")
         
 
 def excluir_paciente():
     banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTES)
 
     if len(banco_pacientes) == 0:
-        print("ERRO! Não há pacientes cadastros.")
+        mensagens.erro("ERRO! Não há pacientes cadastros.")
         return
     else:
         cpf_excluido = input("Digite o CPF do paciente que você deseja excluir (XXXXXXXXXXX): ").replace(" ", "")
@@ -168,4 +169,4 @@ def excluir_paciente():
             gerenciador_dados.salvar_dados(ARQUIVO_PACIENTES, banco_pacientes)
             return
         
-    print("ERRO! Paciente não encontrado.")
+    mensagens.erro("ERRO! Paciente não encontrado.")

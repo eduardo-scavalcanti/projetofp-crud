@@ -1,5 +1,6 @@
 from datetime import datetime
 import gerenciador_dados
+from . import mensagens
 from . import validacoes
 
 ARQUIVO_MEDICO = "medicos.json"
@@ -11,10 +12,10 @@ def cadastrar_consulta():
     banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTE)
 
     if len(banco_medicos) == 0:
-        print("ERRO! Não há médicos cadastrados.")
+        mensagens.erro("ERRO! Não há médicos cadastrados.")
         return
     elif len(banco_pacientes) == 0:
-        print("ERRO! Não há pacientes cadastrados.")
+        mensagens.erro("ERRO! Não há pacientes cadastrados.")
 
     crm_medico = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
     while validacoes.validar_crm(crm_medico) == False:
@@ -28,7 +29,7 @@ def cadastrar_consulta():
             nome_medico = m['nome']
 
     if not medico_encontrado:
-        print("ERRO! Médico não encontrado.")
+        mensagens.erro("ERRO! Médico não encontrado.")
         return
 
     cpf_paciente = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
@@ -43,7 +44,7 @@ def cadastrar_consulta():
             nome_paciente = p['nome']
 
     if not paciente_encontrado:
-        print("ERRO! Paciente não encontrado.")
+        mensagens.erro("ERRO! Paciente não encontrado.")
         return
 
     queixa = input('Queixa: ').strip().capitalize()
@@ -79,7 +80,7 @@ def info_consulta():
     banco_consulta = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTA)
 
     if len(banco_consulta) == 0:
-        print("ERRO! Não há consultas agendadas.")
+        mensagens.erro("ERRO! Não há consultas agendadas.")
         return
     else:
         id_busca = input("Digite o ID da consulta que você quer verificar: ").replace(" ", "")
@@ -97,14 +98,14 @@ def info_consulta():
                 print(f"Data: {consulta['data']}")
                 return
     
-    print("ERRO! Consulta não encontrada.")
+    mensagens.erro("ERRO! Consulta não encontrada.")
 
 
 def alterar_consulta():
     banco_consulta = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTA)
 
     if len(banco_consulta) == 0:
-        print("ERRO! Não há consultas agendadas.")
+        mensagens.erro("ERRO! Não há consultas agendadas.")
         return
 
     id_alterado = input("Digite o ID da consulta que você quer alterar: ").replace(" ", "")
@@ -116,39 +117,39 @@ def alterar_consulta():
 
             banco_medicos = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
 
-            crm_medico = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
-            while validacoes.validar_crm(crm_medico) == False:
-                crm_medico = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
+            novo_crm_medico = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
+            while validacoes.validar_crm(novo_crm_medico) == False:
+                novo_crm_medico = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
                 
                 medico_encontrado = False
 
                 for m in banco_medicos:
-                    if m['crm'] == crm_medico:
+                    if m['crm'] == novo_crm_medico:
                         medico_encontrado = True
                         novo_nome_medico = m['nome']                
                 
                 if medico_encontrado:
                     break
                 else:
-                    print("ERRO! Médico não encontrado. Tente novamente.")
+                    mensagens.erro("ERRO! Médico não encontrado. Tente novamente.")
 
             banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTE)
 
-            cpf_paciente = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
-            while validacoes.validar_cpf(cpf_paciente) == False: 
-                cpf_paciente = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
+            novo_cpf_paciente = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
+            while validacoes.validar_cpf(novo_cpf_paciente) == False: 
+                novo_cpf_paciente = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
 
                 paciente_encontrado = False
 
                 for p in banco_pacientes:
-                    if p['cpf'] == cpf_paciente:
+                    if p['cpf'] == novo_cpf_paciente:
                         paciente_encontrado = True
                         novo_nome_paciente = p['nome']
 
                 if paciente_encontrado:
                     break
                 else:
-                    print("ERRO! Paciente não encontrado.")
+                    mensagens.erro("ERRO! Paciente não encontrado.")
 
             nova_queixa = input('Queixa: ').strip().capitalize()
             while validacoes.validar_queixa(nova_queixa) == False:
@@ -159,23 +160,23 @@ def alterar_consulta():
                 nova_data = input("Data da consulta (DD/MM/AAAA): ").replace(" ", "")
 
             consulta['medico'] = novo_nome_medico
-            consulta['crm'] = crm_medico
+            consulta['crm'] = novo_crm_medico
             consulta['paciente'] = novo_nome_paciente
-            consulta['cpf'] = cpf_paciente
+            consulta['cpf'] = novo_cpf_paciente
             consulta['queixa'] = nova_queixa
             consulta['data'] = nova_data
 
             gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA, banco_consulta)
             return
         
-    print("ERRO! Consulta não encontrada.")
+    mensagens.erro("ERRO! Consulta não encontrada.")
 
 
 def excluir_consulta():
     banco_consulta = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTA)
 
     if len(banco_consulta) == 0:
-        print("ERRO! Não há consultas agendadas.")
+        mensagens.erro("ERRO! Não há consultas agendadas.")
         return
     else:
         id_excluido = input("Digite o ID que você quer excluir: ").replace(" ", "")
@@ -190,4 +191,4 @@ def excluir_consulta():
                 banco_consulta = gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA, banco_consulta)
                 return
 
-        print("ERRO! Consulta não encontrada.")
+        mensagens.erro("ERRO! Consulta não encontrada.")

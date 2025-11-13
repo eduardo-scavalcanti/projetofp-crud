@@ -1,4 +1,5 @@
 import gerenciador_dados
+from . import mensagens
 
 ARQUIVO_MEDICOS = "medicos.json"
 ARQUIVO_PACIENTES = "pacientes.json"
@@ -8,19 +9,19 @@ def relatorio_medicos():
     banco_medicos = gerenciador_dados.carregar_dados(ARQUIVO_MEDICOS)
 
     if len(banco_medicos) == 0:
-        print("ERRO! Não há médicos cadastrados.")
+        mensagens.erro("ERRO! Não há médicos cadastrados.")
         return
     
     banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTES)
 
     if len(banco_pacientes) == 0:
-        print("ERRO! Não há médicos cadastrados.")
+        mensagens.erro("ERRO! Não há pacientes cadastrados.")
         return
     
     banco_consultas = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTAS)
 
     if len(banco_consultas) == 0:
-        print("ERRO! Não há médicos cadastrados.")
+        mensagens.erro("ERRO! Não há consultas agendadas.")
         return
     
     for m in banco_medicos:
@@ -29,10 +30,10 @@ def relatorio_medicos():
             if m['crm'] == c['crm']:
                 consultas += 1
         print('-' * 6, "RELATÓRIO", '-' * 6)
-        print(f"ID: {m['id']}")
-        print(f"Médico: {m['nome']}")
-        print(f"CRM: {m['crm']}")
-        print(f"Consultas agendadas: {consultas}")
+        mensagens.info(f"ID: {m['id']}")
+        mensagens.info(f"Médico: {m['nome']}")
+        mensagens.info(f"CRM: {m['crm']}")
+        mensagens.info(f"Consultas agendadas: {consultas}")
         print('-' * 23, '\n')
         
 
@@ -40,19 +41,19 @@ def relatorio_data():
     banco_medicos = gerenciador_dados.carregar_dados(ARQUIVO_MEDICOS)
 
     if len(banco_medicos) == 0:
-        print("ERRO! Não há médicos cadastrados.")
+        mensagens.erro("ERRO! Não há médicos cadastrados.")
         return
     
     banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTES)
 
     if len(banco_pacientes) == 0:
-        print("ERRO! Não há médicos cadastrados.")
+        mensagens.erro("ERRO! Não há pacientes cadastrados.")
         return
     
     banco_consultas = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTAS)
 
     if len(banco_consultas) == 0:
-        print("ERRO! Não há médicos cadastrados.")
+        mensagens.erro("ERRO! Não há consultas agendadas.")
         return
 
     datas_consultas = set()

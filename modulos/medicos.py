@@ -1,6 +1,6 @@
 import gerenciador_dados
 from . import validacoes
-
+from . import mensagens
 ARQUIVO_MEDICO = "medicos.json" 
 
 def cadastrar_medico():
@@ -13,7 +13,7 @@ def cadastrar_medico():
 
     for medico in banco_medico:
         if crm_medico == medico['crm']:
-            print("ERRO! Já existe um médico cadastrado com esse CRM.")
+            mensagens.erro("ERRO! Já existe um médico cadastrado com esse CRM.")
             return
 
     nome_medico = input("Nome: ").strip().title()
@@ -58,7 +58,7 @@ def cadastrar_medico():
 
     gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
 
-    print("\n\033[1;32mMédico cadastrado com sucesso.\033[0;0m")
+    mensagens.sucesso("Médico cadastrado com sucesso.")
 
 
 def info_medico():
@@ -66,7 +66,7 @@ def info_medico():
     banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
 
     if len(banco_medico) == 0:
-        print("ERRO! Não há médicos cadastrados.")
+        mensagens.erro("ERRO! Não há médicos cadastrados.")
         return
     else:
         crm_busca = input("Digite o CRM do médico que você deseja verificar (XXXXXX/UF): ").replace(" ", "").upper()
@@ -74,18 +74,18 @@ def info_medico():
             crm_busca = input("Digite o CRM do médico que você deseja verificar (XXXXXX/UF): ").replace(" ", "").upper()
         
     for medico in banco_medico:
-        if medico['crm'] == int(crm_busca):
-            print(f"\nID: {medico['id']}")
-            print(f"CRM: {medico['crm']}")
-            print(f"Nome: {medico['nome']}")
-            print(f"Sexo: {medico['sexo']}")
-            print(f"Especialidade: {medico['especialidade']}")
-            print(f"Data de nascimento: {medico['data_nascimento']}")
-            print(f"E-mail: {medico['email']}")
-            print(f"Celular: {medico['numero']}")
+        if medico['crm'] == crm_busca:
+            mensagens.info(f"\nID: {medico['id']}")
+            mensagens.info(f"CRM: {medico['crm']}")
+            mensagens.info(f"Nome: {medico['nome']}")
+            mensagens.info(f"Sexo: {medico['sexo']}")
+            mensagens.info(f"Especialidade: {medico['especialidade']}")
+            mensagens.info(f"Data de nascimento: {medico['data_nascimento']}")
+            mensagens.info(f"E-mail: {medico['email']}")
+            mensagens.info(f"Celular: {medico['numero']}")
             return
         
-    print("ERRO! Médico não encontrado.")
+    mensagens.erro("ERRO! Médico não encontrado.")
 
 
 def alterar_medico():
@@ -93,7 +93,7 @@ def alterar_medico():
     banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
 
     if len(banco_medico) == 0:
-        print("ERRO! Não há médicos cadastrados.")
+        mensagens.erro("ERRO! Não há médicos cadastrados.")
         return
     else:
         crm_alterado = input("Digite o CRM do médico que você deseja alterar (XXXXXX/UF): ").replace(" ", "").upper()
@@ -109,7 +109,7 @@ def alterar_medico():
 
                     for m in banco_medico:
                         if novo_crm == m['crm']:
-                            print("ERRO! Já existe um médico cadastrado com esse CRM.")
+                            mensagens.erro("ERRO! Já existe um médico cadastrado com esse CRM.")
                             return False
 
                 novo_nome = input("Nome: ").strip().title()
@@ -151,7 +151,7 @@ def alterar_medico():
                 gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
                 return
             
-        print("ERRO! Médico não encontrado.")
+        mensagens.erro("ERRO! Médico não encontrado.")
 
 
 def excluir_medico():
@@ -159,11 +159,11 @@ def excluir_medico():
     banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
 
     if len(banco_medico) == 0:
-        print("ERRO! Não há médicos cadastrados.")
+        mensagens.erro("ERRO! Não há médicos cadastrados.")
         return
     else:
         crm_excluido = input("Digite o CRM do médico que você deseja excluir: ").replace(" ", "").upper()
-        while validacoes.validar_id(crm_excluido) == False:
+        while validacoes.validar_crm(crm_excluido) == False:
             crm_excluido = input("Digite o CRM do médico que você deseja excluir: ").replace(" ", "").upper()
 
         for medico in banco_medico:
@@ -174,4 +174,4 @@ def excluir_medico():
                 gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
                 return
             
-        print("ERRO! Médico não encontrado.")
+        mensagens.erro("ERRO! Médico não encontrado.")
