@@ -29,22 +29,6 @@ def validar_nome(nome):
     return True
 
 
-def validar_idade(idade):
-    if idade == "":
-        print("ERRO! Campo vazio.")
-        return False
-    
-    try:
-        int(idade)
-    except ValueError:
-        print("ERRO! Digite apenas números inteiros.")
-        return False
-    
-    if int(idade) <= 0:
-        print("ERRO! Idade menor ou igual a zero.")
-        return False
-
-
 def validar_data_nascimento(data):
     if data == "":
         print("ERRO! Campo vazio.")
