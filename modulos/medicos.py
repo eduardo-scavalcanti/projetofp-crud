@@ -58,7 +58,7 @@ def cadastrar_medico():
 
     gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
 
-    print("\n\033[1;32mMédico criado com sucesso.\033[0;0m")
+    print("\n\033[1;32mMédico cadastrado com sucesso.\033[0;0m")
 
 
 def info_medico():
