@@ -4,15 +4,21 @@ from . import validacoes
 ARQUIVO_MEDICO = "medicos.json" 
 
 def cadastrar_medico():
-    
-    nome_medico = input("Nome: ").strip().title()
-    while validacoes.validar_nome(nome_medico) == False:
-        nome_medico = input("Nome: ").strip().title()
 
+    banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
+    
     crm_medico = input("CRM (999999/UF): ").replace(" ", "").upper()
     while validacoes.validar_crm(crm_medico) == False:
         crm_medico = input("CRM (999999/UF): ").replace(" ", "").upper()
 
+    for medico in banco_medico:
+        if crm_medico == medico['crm']:
+            print("ERRO! Já existe um médico cadastrado com esse CRM.")
+            return
+
+    nome_medico = input("Nome: ").strip().title()
+    while validacoes.validar_nome(nome_medico) == False:
+        nome_medico = input("Nome: ").strip().title()
 
     especialidade_medico = input("Especialidade: ").strip().title()
     while validacoes.validar_especialidade(especialidade_medico) == False:
@@ -29,9 +35,6 @@ def cadastrar_medico():
     numero_medico = input("Telefone (99)99999-9999: ").replace(" ", "")
     while validacoes.validar_numero(numero_medico) == False:
         numero_medico = input("Telefone (99)99999-9999: ").replace(" ", "")
-
-
-    banco_medico = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
 
     medico = {}
 
