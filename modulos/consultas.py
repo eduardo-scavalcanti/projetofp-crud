@@ -75,6 +75,8 @@ def cadastrar_consulta():
 
     banco_consulta = gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA, banco_consulta)
 
+    mensagens.sucesso("Consulta agendada com sucesso.")
+
 
 def info_consulta():
     banco_consulta = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTA)
@@ -167,6 +169,8 @@ def alterar_consulta():
             consulta['data'] = nova_data
 
             gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA, banco_consulta)
+
+            mensagens.sucesso("Consulta alterada com sucesso.")
             return
         
     mensagens.erro("ERRO! Consulta não encontrada.")
@@ -189,6 +193,8 @@ def excluir_consulta():
                 banco_consulta.remove(consulta)
 
                 banco_consulta = gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA, banco_consulta)
+
+                mensagens.sucesso("Consulta agendada com sucesso.")
                 return
 
         mensagens.erro("ERRO! Consulta não encontrada.")

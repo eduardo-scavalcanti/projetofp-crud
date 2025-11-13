@@ -146,6 +146,8 @@ def alterar_paciente():
             paciente['numero'] = novo_numero
 
             gerenciador_dados.salvar_dados(ARQUIVO_PACIENTES, banco_pacientes)
+
+            mensagens.sucesso("Paciente alterado com sucesso.")
             return
         
     mensagens.erro("ERRO! Paciente não encontrado.")
@@ -167,6 +169,8 @@ def excluir_paciente():
             banco_pacientes.remove(paciente)
 
             gerenciador_dados.salvar_dados(ARQUIVO_PACIENTES, banco_pacientes)
+
+            mensagens.sucesso("Paciente excluído com sucesso.")
             return
         
     mensagens.erro("ERRO! Paciente não encontrado.")

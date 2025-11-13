@@ -136,8 +136,6 @@ def alterar_medico():
                 while validacoes.validar_numero(novo_numero) == False:
                     novo_numero = input("Número de celular (DDD)9XXXX-XXXX: ").replace(" ", "")
                 
-                medico = {}
-
                 medico['crm'] = novo_crm
                 medico['nome'] = novo_nome
                 medico['sexo'] = novo_sexo
@@ -145,10 +143,10 @@ def alterar_medico():
                 medico['data_nascimento'] = nova_data_nascimento
                 medico['email'] = novo_email
                 medico['numero'] = novo_numero
-                
-                banco_medico.append(medico)
 
                 gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
+
+                mensagens.sucesso("Médico alterado com sucesso.")
                 return
             
         mensagens.erro("ERRO! Médico não encontrado.")
@@ -172,6 +170,8 @@ def excluir_medico():
                 banco_medico.remove(medico)
 
                 gerenciador_dados.salvar_dados(ARQUIVO_MEDICO, banco_medico)
+
+                mensagens.sucesso("Médico excluído com sucesso.")
                 return
             
         mensagens.erro("ERRO! Médico não encontrado.")
