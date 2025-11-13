@@ -166,4 +166,11 @@ def validar_sexo(sexo):
         return False
     
     return True
-    
+
+
+def validar_queixa(queixa):
+    if queixa == "":
+        print("ERRO! Campo em branco.")
+        return False
+
+    return True
