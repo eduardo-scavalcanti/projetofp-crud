@@ -1,9 +1,8 @@
-from . import medicos
-from . import pacientes
 from . import consultas
-from . import relatorios
+from . import medicos
 from . import mensagens
-
+from . import pacientes
+from . import relatorios
 
 def menu_medicos():
   while True:

@@ -29,12 +29,10 @@ def relatorio_medicos():
         for c in banco_consultas:
             if m['crm'] == c['crm']:
                 consultas += 1
-        print('-' * 6, "RELATÓRIO", '-' * 6)
         mensagens.info(f"ID: {m['id']}")
         mensagens.info(f"Médico: {m['nome']}")
         mensagens.info(f"CRM: {m['crm']}")
-        mensagens.info(f"Consultas agendadas: {consultas}")
-        print('-' * 23, '\n')
+        mensagens.info(f"Consultas agendadas: {consultas}\n")
         
 
 def relatorio_data():
@@ -69,7 +67,5 @@ def relatorio_data():
         for c in banco_consultas:
             if d == c['data']:
                 consultas += 1
-        print('-' * 6, "RELATÓRIO", '-' * 6)
-        print(f"Data: {d}")
-        print(f"Consultas agendadas: {consultas}")
-        print('-' * 23, '\n')
+        mensagens.info(f"Data: {d}")
+        mensagens.info(f"Consultas agendadas: {consultas}\n")

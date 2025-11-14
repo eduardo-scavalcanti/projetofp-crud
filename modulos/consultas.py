@@ -75,7 +75,7 @@ def cadastrar_consulta():
 
     banco_consulta = gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA, banco_consulta)
 
-    mensagens.sucesso("Consulta agendada com sucesso.")
+    mensagens.sucesso(f"Consulta agendada com sucesso.\nID: {consulta['id']}")
 
 
 def info_consulta():

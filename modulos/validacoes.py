@@ -1,6 +1,6 @@
 from datetime import datetime
-import re
 from . import mensagens
+import re
 
 def validar_id(id):
     if id == "":

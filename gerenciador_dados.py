@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 CAMINHO_ABSOLUTO_DADOS = os.path.join(
     os.path.dirname(__file__),
