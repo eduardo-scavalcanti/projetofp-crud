@@ -2,6 +2,14 @@ from datetime import datetime
 from . import mensagens
 import re
 
+def validar_opcao(opcao):
+    if opcao.isdigit() == False:
+        mensagens.erro("ERRO! Digite apenas números.")
+        return False
+    
+    return True
+
+
 def validar_id(id):
     if id == "":
         mensagens.erro("ERRO! Campo em branco.")

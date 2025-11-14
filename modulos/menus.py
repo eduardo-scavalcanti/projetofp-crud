@@ -3,6 +3,7 @@ from . import medicos
 from . import mensagens
 from . import pacientes
 from . import relatorios
+from . import validacoes
 
 def menu_medicos():
   while True:
@@ -13,17 +14,12 @@ def menu_medicos():
     print("4 - Excluir médico")
     print("0 - Voltar para o menu principal ")
 
-    while True:
+    opcao_medico = input("Opção: ").replace(" ", "")
+
+    while validacoes.validar_opcao(opcao_medico) == False:
       opcao_medico = input("Opção: ").replace(" ", "")
 
-      if opcao_medico.isdigit() == False:
-        mensagens.erro("ERRO! Digite apenas números.")
-        continue
-      else:
-        opcao_medico = int(opcao_medico)
-        break
-
-    match(opcao_medico): 
+    match(int(opcao_medico)): 
       case 1:
         mensagens.titulo("CADASTRAR MÉDICO")
         medicos.cadastrar_medico()
@@ -51,17 +47,12 @@ def menu_pacientes():
     print("4 - Excluir Paciente")
     print("0 - Voltar para o menu principal ")
 
-    while True:
+    opcao_paciente = input("Opção: ").replace(" ", "")
+
+    while validacoes.validar_opcao(opcao_paciente) == False:
       opcao_paciente = input("Opção: ").replace(" ", "")
 
-      if not opcao_paciente.isdigit():
-        mensagens.erro("ERRO! Digite apenas números.")
-        continue
-      else:
-        opcao_paciente = int(opcao_paciente)
-        break
-
-    match(opcao_paciente): 
+    match(int(opcao_paciente)): 
       case 1:
         mensagens.titulo("CADASTRAR PACIENTE")
         pacientes.cadastrar_paciente()
@@ -89,17 +80,12 @@ def menu_consultas():
     print("4 - Excluir Consulta")
     print("0 - Voltar para o menu principal ")
 
-    while True:
+    opcao_consulta = input("Opção: ").replace(" ", "")
+
+    while validacoes.validar_opcao(opcao_consulta) == False:
       opcao_consulta = input("Opção: ").replace(" ", "")
 
-      if not opcao_consulta.isdigit():
-          mensagens.erro("ERRO! Digite apenas números.")
-          continue
-      else:
-        opcao_consulta = int(opcao_consulta)
-        break
-
-    match(opcao_consulta): 
+    match(int(opcao_consulta)): 
       case 1:
         mensagens.titulo("AGENDAR CONSULTA")
         consultas.cadastrar_consulta()
@@ -125,17 +111,12 @@ def menu_relatorios():
     print("2 - Relatório por datas")
     print("0 - Voltar para o menu principal ")
 
-    while True:
+    opcao_relatorio = input("Opção: ").replace(" ", "")
+
+    while validacoes.validar_opcao(opcao_relatorio) == False:
       opcao_relatorio = input("Opção: ").replace(" ", "")
 
-      if not opcao_relatorio.isdigit():
-          mensagens.erro("ERRO! Digite apenas números.")
-          continue
-      else:
-        opcao_relatorio = int(opcao_relatorio)
-        break
-
-    match(opcao_relatorio): 
+    match(int(opcao_relatorio)): 
       case 1:
         mensagens.titulo("RELATÓRIO POR MÉDICOS")
         relatorios.relatorio_medicos()
@@ -157,17 +138,12 @@ def menu_principal():
     print("4 - Menu Relatórios")
     print("0 - Encerrar o Programa ")
 
-    while True:
+    opcao = input("Opção: ").replace(" ", "")
+
+    while validacoes.validar_opcao(opcao) == False:
       opcao = input("Opção: ").replace(" ", "")
 
-      if opcao.isdigit() == False:
-        print("ERRO! Digite apenas números.")
-        continue
-      else:
-        opcao = int(opcao)
-        break
-
-    match(opcao): 
+    match(int(opcao)): 
       case 1:
         menu_medicos()
       case 2:
