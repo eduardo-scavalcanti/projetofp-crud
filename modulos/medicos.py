@@ -1,6 +1,7 @@
 import gerenciador_dados
-from . import validacoes
 from . import mensagens
+from . import validacoes
+
 ARQUIVO_MEDICO = "medicos.json" 
 
 def cadastrar_medico():
