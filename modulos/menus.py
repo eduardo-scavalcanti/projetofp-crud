@@ -1,171 +1,149 @@
-from . import medicos
-from . import pacientes
 from . import consultas
+from . import medicos
+from . import mensagens
+from . import pacientes
 from . import relatorios
+from . import validacoes
 
 def menu_medicos():
   while True:
+    mensagens.titulo("MÓDULO MÉDICOS")
     print("1 - Cadastrar médico")
     print("2 - Ver informações")
     print("3 - Alterar Cadastro")
     print("4 - Excluir médico")
     print("0 - Voltar para o menu principal ")
 
-    while True:
-      opcao_medico = input("Opção: ").strip()
+    opcao_medico = input("Opção: ").replace(" ", "")
 
-      if not opcao_medico.isdigit():
-          print("Digite apenas números.")
-          continue
+    while validacoes.validar_opcao(opcao_medico) == False:
+      opcao_medico = input("Opção: ").replace(" ", "")
 
-      opcao_medico_int = int(opcao_medico)
-
-      if 0 <= opcao_medico_int <= 4:
-          opcao_medico = opcao_medico_int
-          break
-      else:
-          print("Opção inválida.")
-
-    match(opcao_medico): 
+    match(int(opcao_medico)): 
       case 1:
+        mensagens.titulo("CADASTRAR MÉDICO")
         medicos.cadastrar_medico()
       case 2:
+        mensagens.titulo("INFORMAÇÕES MÉDICO")
         medicos.info_medico()
       case 3:
+        mensagens.titulo("ALTERAR MÉDICO")
         medicos.alterar_medico()    
       case 4:
+        mensagens.titulo("EXCLUIR MÉDICO")
         medicos.excluir_medico()
       case 0:
         break
+      case __:
+        mensagens.erro("ERRO! Opção inválida")
                     
 
 def menu_pacientes():
   while True:
+    mensagens.titulo("MÓDULO PACIENTES")
     print("1 - Cadastrar Paciente")
     print("2 - Ver informações")
     print("3 - Alterar Cadastro")
     print("4 - Excluir Paciente")
     print("0 - Voltar para o menu principal ")
 
-    
-    while True:
-      opcao_paciente = input("Opção: ").strip()
+    opcao_paciente = input("Opção: ").replace(" ", "")
 
-      if not opcao_paciente.isdigit():
-          print("Digite apenas números.")
-          continue
+    while validacoes.validar_opcao(opcao_paciente) == False:
+      opcao_paciente = input("Opção: ").replace(" ", "")
 
-      opcao_paciente_int = int(opcao_paciente)
-
-      if 0 <= opcao_paciente_int <= 4:
-          opcao_paciente = opcao_paciente_int
-          break
-      else:
-          print("Opção inválida.")
-
-    match(opcao_paciente): 
+    match(int(opcao_paciente)): 
       case 1:
+        mensagens.titulo("CADASTRAR PACIENTE")
         pacientes.cadastrar_paciente()
       case 2:
+        mensagens.titulo("INFORMAÇÕES PACIENTE")
         pacientes.info_paciente()
       case 3:
+        mensagens.titulo("ALTERAR PACIENTE")
         pacientes.alterar_paciente()    
       case 4:
+        mensagens.titulo("EXCLUIR PACIENTE")
         pacientes.excluir_paciente()
       case 0:
         break
+      case __:
+        mensagens.erro("ERRO! Opção inválida")
 
 
 def menu_consultas():
   while True:
+    mensagens.titulo("MÓDULO CONSULTAS")
     print("1 - Cadastrar Consulta")
     print("2 - Ver informações")
     print("3 - Alterar Cadastro de Consulta")
     print("4 - Excluir Consulta")
     print("0 - Voltar para o menu principal ")
 
-    while True:
-      opcao_consulta = input("Opção: ").strip()
+    opcao_consulta = input("Opção: ").replace(" ", "")
 
-      if not opcao_consulta.isdigit():
-          print("Digite apenas números.")
-          continue
+    while validacoes.validar_opcao(opcao_consulta) == False:
+      opcao_consulta = input("Opção: ").replace(" ", "")
 
-      opcao_consulta_int = int(opcao_consulta)
-
-      if 0 <= opcao_consulta_int <= 4:
-          opcao_consulta = opcao_consulta_int
-          break
-      else:
-          print("Opção inválida.")
-
-    match(opcao_consulta): 
+    match(int(opcao_consulta)): 
       case 1:
+        mensagens.titulo("AGENDAR CONSULTA")
         consultas.cadastrar_consulta()
       case 2:
+        mensagens.titulo("INFORMAÇÕES CONSULTA")
         consultas.info_consulta()
       case 3:
+        mensagens.titulo("ALTERAR CONSULTA")
         consultas.alterar_consulta()    
       case 4:
+        mensagens.titulo("EXCLUIR CONSULTA")
         consultas.excluir_consulta()
       case 0:
         break
+      case __:
+        mensagens.erro("ERRO! Opção inválida")
           
 
 def menu_relatorios():
   while True:
+    mensagens.titulo("MÓDULO RELATÓRIOS")
     print("1 - Relatório por médicos")
     print("2 - Relatório por datas")
     print("0 - Voltar para o menu principal ")
 
-    while True:
-      opcao_relatorio = input("Opção: ").strip()
+    opcao_relatorio = input("Opção: ").replace(" ", "")
 
-      if not opcao_relatorio.isdigit():
-          print("Digite apenas números.")
-          continue
+    while validacoes.validar_opcao(opcao_relatorio) == False:
+      opcao_relatorio = input("Opção: ").replace(" ", "")
 
-      opcao_relatorio_int = int(opcao_relatorio)
-
-      if 0 <= opcao_relatorio_int <= 4:
-          opcao_relatorio = opcao_relatorio_int
-          break
-      else:
-          print("Opção inválida.")
-
-    match(opcao_relatorio): 
+    match(int(opcao_relatorio)): 
       case 1:
+        mensagens.titulo("RELATÓRIO POR MÉDICOS")
         relatorios.relatorio_medicos()
       case 2:
+        mensagens.titulo("RELATÓRIO POR DATA")
         relatorios.relatorio_data() 
       case 0:
         break
+      case __:
+        mensagens.erro("ERRO! Opção inválida")
 
 
 def menu_principal():
   while True:
+    mensagens.titulo("MENU PRINCIPAL")
     print("1 - Menu Médicos")
     print("2 - Menu Pacientes")
     print("3 - Menu Consultas")
     print("4 - Menu Relatórios")
     print("0 - Encerrar o Programa ")
 
-    while True:
-      opcao = input("Opção: ").strip()
+    opcao = input("Opção: ").replace(" ", "")
 
-      if not opcao.isdigit():
-          print("Digite apenas números.")
-          continue
+    while validacoes.validar_opcao(opcao) == False:
+      opcao = input("Opção: ").replace(" ", "")
 
-      opcao_int = int(opcao)
-
-      if 0 <= opcao_int <= 4:
-          opcao = opcao_int
-          break
-      else:
-          print("Opção inválida.")
-
-    match(opcao): 
+    match(int(opcao)): 
       case 1:
         menu_medicos()
       case 2:
@@ -176,3 +154,5 @@ def menu_principal():
         menu_relatorios()
       case 0:
           break
+      case __:
+        mensagens.erro("ERRO! Opção inválida.")

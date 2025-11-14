@@ -1,190 +1,176 @@
 import gerenciador_dados
+from . import mensagens
+from . import validacoes
 
 ARQUIVO_PACIENTES = "pacientes.json"
 
 def cadastrar_paciente(): 
-    paciente = {}
-
-    while True:
-        paciente_nome = input("Digite o nome do paciente: ").strip()
-        if paciente_nome == "":
-            print("Nome inválido, escreva novamente.")
-        else:
-            paciente["nome"] = paciente_nome
-            break
-
-    while True:
-        paciente_idade = input("Digite a idade do paciente: ").strip()
-        if not paciente_idade.isdigit():
-            print("Idade inválida. Digite apenas números inteiros.")
-            continue
-        elif int(paciente_idade) <= 0:
-            print("Idade inválida. Digite uma idade maior ou igual a 1 ano.")
-            continue
-        else:
-            paciente["idade"] = int(paciente_idade)
-            break
-
-    while True:
-        paciente_sexo = input("Digite o sexo do paciente (M/F): ").strip().upper()
-        if not paciente_sexo.replace(" ", "").isalpha():
-            print("Sexo inválido. Digite apenas letras.")
-        elif paciente_sexo not in "MF":
-            print("Sexo inválido. Tente novamente")
-        else:
-            paciente["sexo"] = paciente_sexo
-            break
-
-    while True: 
-        paciente_cpf = input("Digite o CPF do paciente (apenas números): ").strip()
-        if not paciente_cpf.isdigit(): 
-            print("CPF inválido. Digite apenas números.")
-            continue
-        elif len(paciente_cpf) != 11:
-            print("CPF inválido. Digite apenas 11 digitos.")
-            continue
-        else:
-            paciente["cpf"] = paciente_cpf
-            break
-
     banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTES)
 
-    for p in banco_pacientes:
-        if p['cpf'] == paciente_cpf:
-            print("ERRO: Já existe um paciente cadastrado com este CPF.")
-            return
+    paciente_cpf = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
+    while validacoes.validar_cpf(paciente_cpf) == False: 
+        paciente_cpf = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
+    
+    for paciente in banco_pacientes:
+        if paciente_cpf == paciente['cpf']:
+            print("ERRO! Já existe um paciente cadastrado com esse CPF.")
+            return False
+
+    paciente = {}
+
+    if len(banco_pacientes) == 0:
+        paciente['id'] = 1
+    else:
+       paciente['id'] = banco_pacientes[len(banco_pacientes) - 1]['id'] + 1
+
+    paciente['cpf'] = paciente_cpf
+
+    paciente_nome = input("Nome: ").strip().title()
+    while validacoes.validar_nome(paciente_nome) == False:
+        paciente_nome = input("Nome: ").strip().title()
+    
+    paciente['nome'] = paciente_nome
+
+    paciente_sexo = input("Sexo (M/F): ").replace(" ", "").upper()
+    while validacoes.validar_sexo(paciente_sexo) == False:
+        paciente_sexo = input("Sexo (M/F): ").replace(" ", "").upper()
+
+    paciente['sexo'] = paciente_sexo
+
+    paciente_nascimento_medico = input("Data de nascimento (DD/MM/AAAA): ").replace(" ", "")
+    while validacoes.validar_data_nascimento(paciente_nascimento_medico) == False:
+        paciente_nascimento_medico = input("Data de nascimento (DD/MM/AAAA): ").replace(" ", "")
+
+    paciente['data_nascimento'] = paciente_nascimento_medico
+
+    paciente_email = input("E-mail (nome@dominio.com): ").replace(" ", "").lower()
+    while validacoes.validar_email(paciente_email) == False:
+        paciente_email = input("E-mail (nome@dominio.com): ").replace(" ", "").lower()
+
+    paciente['email'] = paciente_email
+
+    paciente_numero = input("Número de celular (DDD)9XXXX-XXXX: ").replace(" ", "")
+    while validacoes.validar_numero(paciente_numero) == False:
+        paciente_numero = input("Número de celular (DDD)9XXXX-XXXX: ").replace(" ", "")
+        
+    paciente['numero'] = paciente_numero
 
     banco_pacientes.append(paciente)
 
     gerenciador_dados.salvar_dados(ARQUIVO_PACIENTES, banco_pacientes)
 
+    mensagens.sucesso("Paciente cadastrado com sucesso.")
+
 
 def info_paciente():
+
     banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTES)
 
     if len(banco_pacientes) == 0:
-        print("Não há pacientes cadastrados.")
+        mensagens.erro("ERRO! Não há pacientes cadastrados.")
         return
     else:
-        while True: 
-            id_cpf = input("Digite o CPF do paciente (apenas números): ").strip()
-            if not id_cpf.isdigit(): 
-                print("CPF inválido. Digite apenas números.")
-                continue
-            elif len(id_cpf) != 11:
-                print("CPF inválido. Digite apenas 11 digitos.")
-                continue
-            else:
-                break
+        cpf = input("Digite o CPF do paciente que você deseja verificar (XXXXXXXXXXX): ").replace(" ", "")
+        if validacoes.validar_cpf(cpf) == False:
+            cpf = input("Digite o CPF do paciente que você deseja verificar (XXXXXXXXXXX): ").replace(" ", "")
 
         for paciente in banco_pacientes:
-            if paciente["cpf"] == id_cpf:
-                print(f"Nome: {paciente['nome']}")
-                print(f"Idade: {paciente['idade']}")
-                print(f"Sexo: {paciente['sexo']}")
-                print(f"CPF: {paciente['cpf']}")
+            if paciente['cpf'] == cpf:
+                mensagens.info(f"ID: {paciente['id']}")
+                mensagens.info(f"CPF: {paciente['cpf']}")
+                mensagens.info(f"Nome: {paciente['nome']}")
+                mensagens.info(f"Sexo: {paciente['sexo']}")
+                mensagens.info(f"Data de nascimento: {paciente['data_nascimento']}")
+                mensagens.info(f"E-mail: {paciente['email']}")
+                mensagens.info(f"Celular: {paciente['numero']}")
                 return
             
-        print("Paciente não encontrado.")
+        mensagens.erro("ERRO! Paciente não encontrado.")
 
 def alterar_paciente():
+
     banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTES)
 
     if len(banco_pacientes) == 0:
-        print("Não há pacientes cadastrados.")
+        mensagens.erro("ERRO! Não há pacientes cadastrados.")
         return
-    else:
-        while True: 
-            id_cpf = input("Digite o CPF do paciente (apenas números): ").strip()
-            if not id_cpf.isdigit(): 
-                print("CPF inválido. Digite apenas números.")
-                continue
-            elif len(id_cpf) != 11:
-                print("CPF inválido. Digite apenas 11 digitos.")
-                continue
-            else:
-                break
+    else: 
+        cpf = input("Digite o CPF do paciente que você deseja alterar (XXXXXXXXXXX): ").replace(" ", "")
+        if validacoes.validar_cpf(cpf) == False: 
+            cpf = input("Digite o CPF do paciente que você deseja alterar (XXXXXXXXXXX): ").replace(" ", "")
 
     for paciente in banco_pacientes:
-        if paciente["cpf"] == id_cpf:
+        if paciente['cpf'] == cpf:
 
-            while True:
-                novo_nome = input("Digite o novo nome do paciente: ").strip()
-                if novo_nome == "":
-                    print("Nome inválido, escreva novamente.")
-                else:
-                    break
-
-            while True:
-                nova_idade = input("Digite a nova idade do paciente: ").strip()
-                if not nova_idade.isdigit():
-                    print("Idade inválida. Digite apenas números inteiros.")
-                    continue
-                elif int(nova_idade) <= 0:
-                    print("Idade inválida. Digite uma idade maior ou igual a 1 ano.")
-                    continue
-                else:
-                    break
-
-            while True:
-                novo_sexo = input("Digite o novo sexo do paciente (M/F): ").strip().upper()
-                if not novo_sexo.replace(" ", "").isalpha():
-                    print("Sexo inválido. Digite apenas letras.")
-                elif novo_sexo not in "MF":
-                    print("Sexo inválido. Tente novamente")
-                else:
-                    break
-
-            while True: 
-                novo_cpf = input("Digite o novo CPF do paciente (apenas números): ").strip()
-                if not novo_cpf.isdigit(): 
-                    print("CPF inválido. Digite apenas números.")
-                    continue
-                elif len(novo_cpf) != 11:
-                    print("CPF inválido. Digite apenas 11 digitos.")
-                    continue
-                else:
-                    break
-
-            for p in banco_pacientes:
-                if p['cpf'] == novo_cpf and p['cpf'] != id_cpf: 
-                    print("ERRO: Este novo CPF já pertence a outro paciente.")
-                    return
-
-            paciente["nome"] = novo_nome
-            paciente["idade"] = int(nova_idade)
-            paciente["sexo"] = novo_sexo
-            paciente["cpf"] = novo_cpf
+            novo_cpf = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
+            while validacoes.validar_cpf(novo_cpf) == False: 
+                novo_cpf = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
             
+            for paciente in banco_pacientes:
+                if novo_cpf == paciente['cpf']:
+                    mensagens.erro("ERRO! Já existe um paciente cadastrado com esse CPF.")
+                    return False
+
+            paciente = {}
+
+            paciente['cpf'] = novo_cpf
+
+            novo_nome = input("Nome: ").strip().title()
+            while validacoes.validar_nome(novo_nome) == False:
+                novo_nome = input("Nome: ").strip().title()
+            
+            paciente['nome'] = novo_nome
+
+            novo_sexo = input("Sexo (M/F): ").replace(" ", "").upper()
+            while validacoes.validar_sexo(novo_sexo) == False:
+                novo_sexo = input("Sexo (M/F): ").replace(" ", "").upper()
+
+            paciente['sexo'] = novo_sexo
+
+            nova_data_nascimento = input("Data de nascimento (DD/MM/AAAA): ").replace(" ", "")
+            while validacoes.validar_data_nascimento(nova_data_nascimento) == False:
+                nova_data_nascimento = input("Data de nascimento (DD/MM/AAAA): ").replace(" ", "")
+
+            paciente['data_nascimento'] = nova_data_nascimento
+
+            novo_email = input("E-mail (nome@dominio.com): ").replace(" ", "").lower()
+            while validacoes.validar_email(novo_email) == False:
+                novo_email = input("E-mail (nome@dominio.com): ").replace(" ", "").lower()
+
+            paciente['email'] = novo_email
+
+            novo_numero = input("Número de celular (DDD)9XXXX-XXXX: ").replace(" ", "")
+            while validacoes.validar_numero(novo_numero) == False:
+                novo_numero = input("Número de celular (DDD)9XXXX-XXXX: ").replace(" ", "")
+                
+            paciente['numero'] = novo_numero
+
             gerenciador_dados.salvar_dados(ARQUIVO_PACIENTES, banco_pacientes)
 
+            mensagens.sucesso("Paciente alterado com sucesso.")
             return
-    print("Paciente não encontrado. Não foi possível alterar.")
+        
+    mensagens.erro("ERRO! Paciente não encontrado.")
         
 
 def excluir_paciente():
     banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTES)
 
     if len(banco_pacientes) == 0:
-        print("Não há pacientes cadastros.")
+        mensagens.erro("ERRO! Não há pacientes cadastros.")
         return
     else:
-        while True: 
-            cpf_excluido = input("Digite o CPF do paciente para ser excluído (apenas números): ").strip()
-            if not cpf_excluido.isdigit(): 
-                print("CPF inválido. Digite apenas números.")
-                continue
-            elif len(cpf_excluido) != 11:
-                print("CPF inválido. Digite apenas 11 digitos.")
-                continue
-            else:
-                break
+        cpf_excluido = input("Digite o CPF do paciente que você deseja excluir (XXXXXXXXXXX): ").replace(" ", "")
+        if validacoes.validar_cpf(cpf_excluido) == False: 
+            cpf_excluido = input("Digite o CPF do paciente que você deseja alterar (XXXXXXXXXXX): ").replace(" ", "")
 
     for paciente in banco_pacientes:
         if paciente["cpf"] == cpf_excluido:
             banco_pacientes.remove(paciente)
 
             gerenciador_dados.salvar_dados(ARQUIVO_PACIENTES, banco_pacientes)
+
+            mensagens.sucesso("Paciente excluído com sucesso.")
             return
         
-    print("Paciente não encontrado. Não foi possível excluir.")
+    mensagens.erro("ERRO! Paciente não encontrado.")

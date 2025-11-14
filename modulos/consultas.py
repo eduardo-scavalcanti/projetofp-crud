@@ -1,5 +1,7 @@
 from datetime import datetime
 import gerenciador_dados
+from . import mensagens
+from . import validacoes
 
 ARQUIVO_MEDICO = "medicos.json"
 ARQUIVO_PACIENTE = "pacientes.json"
@@ -10,15 +12,14 @@ def cadastrar_consulta():
     banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTE)
 
     if len(banco_medicos) == 0:
-        print("Não há médicos cadastrados.")
+        mensagens.erro("ERRO! Não há médicos cadastrados.")
         return
     elif len(banco_pacientes) == 0:
-        print("Não há pacientes cadastrados.")
+        mensagens.erro("ERRO! Não há pacientes cadastrados.")
 
-    crm_medico = input("CRM do médico (apenas números): ").strip()
-    while (crm_medico.isdigit() == False):
-        print("INVÁLIDO. Insira apenas números.")
-        crm_medico = input("CRM do médico (apenas números): ").strip()
+    crm_medico = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
+    while validacoes.validar_crm(crm_medico) == False:
+        crm_medico = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
     
     medico_encontrado = False
 
@@ -28,13 +29,12 @@ def cadastrar_consulta():
             nome_medico = m['nome']
 
     if not medico_encontrado:
-        print("Médico não encontrado.")
+        mensagens.erro("ERRO! Médico não encontrado.")
         return
 
-    cpf_paciente = input("CPF do paciente (apenas números): ").strip()
-    while (cpf_paciente.isdigit() == False or len(cpf_paciente) != 11):
-        print("CPF INVÁLIDO! Insira apenas números e verifique novamente.")
-        cpf_paciente = input("CPF do paciente (apenas números): ").strip()
+    cpf_paciente = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
+    while validacoes.validar_cpf(cpf_paciente) == False: 
+        cpf_paciente = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
 
     paciente_encontrado = False
 
@@ -44,32 +44,19 @@ def cadastrar_consulta():
             nome_paciente = p['nome']
 
     if not paciente_encontrado:
-        print("Paciente não encontrado.")
+        mensagens.erro("ERRO! Paciente não encontrado.")
         return
 
-    hoje = datetime.now().date()
+    queixa = input('Queixa: ').strip().capitalize()
+    while validacoes.validar_queixa(queixa) == False:
+        queixa = input('Queixa: ').strip().capitalize()
 
-    while True:
-        data_consulta = input('Digite a data da consulta (DD/MM/AAAA): ').strip()
-
-        try:
-            data_datetime = datetime.strptime(data_consulta, "%d/%m/%Y").date()
-
-            if data_datetime >= hoje:
-                break
-            else:
-                print("Erro: A data deve ser hoje ou uma data futura. Tente novamente.")
-
-        except ValueError:
-            print("Erro: Formato de data inválido ou data não existe (ex: 30 de Fev). Use DD/MM/AAAA.")
-
-    queixa = input('Queixa do paciente: ').strip()
-    while queixa == "":
-        print('O campo "queixa" não pode ficar vazio. Tente novamente.')
-        queixa = input('Queixa do paciente: ').strip()
+    data_consulta = input("Data da consulta (DD/MM/AAAA): ").replace(" ", "")
+    while validacoes.validar_data_consulta(data_consulta) == False:
+        data_consulta = input("Data da consulta (DD/MM/AAAA): ").replace(" ", "")
 
     consulta = {}
-
+    
     banco_consulta = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTA)
 
     if len(banco_consulta) == 0:
@@ -88,22 +75,22 @@ def cadastrar_consulta():
 
     banco_consulta = gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA, banco_consulta)
 
+    mensagens.sucesso(f"Consulta agendada com sucesso.\nID: {consulta['id']}")
+
 
 def info_consulta():
     banco_consulta = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTA)
 
     if len(banco_consulta) == 0:
-        print("Não há consultas agendadas.")
+        mensagens.erro("ERRO! Não há consultas agendadas.")
         return
     else:
-        id = input("Digite o ID da consulta que você quer verificar: ").strip()
-        while(id.isdigit() == False):
-            print("INVÁLIDO. Insira um ID válido (apenas números)")
-            id = input("Digite o ID da consulta que você quer verificar: ").strip()
-        id = int(id)
+        id_busca = input("Digite o ID da consulta que você quer verificar: ").replace(" ", "")
+        while validacoes.validar_id(id_busca) == False:
+            id_busca = input("Digite o ID da consulta que você quer verificar: ").replace(" ", "")
 
         for consulta in banco_consulta:
-            if consulta["id"] == id:
+            if consulta['id'] == int(id_busca):
                 print(f"ID: {consulta['id']}")
                 print(f"Médico: {consulta['medico']}")
                 print(f"CRM: {consulta['crm']}")
@@ -113,120 +100,101 @@ def info_consulta():
                 print(f"Data: {consulta['data']}")
                 return
     
-    print("Consulta não encontrada.")
+    mensagens.erro("ERRO! Consulta não encontrada.")
 
 
 def alterar_consulta():
     banco_consulta = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTA)
 
     if len(banco_consulta) == 0:
-        print("Não há consultas agendadas.")
+        mensagens.erro("ERRO! Não há consultas agendadas.")
         return
 
-    id_alterado = input("Digite o ID da consulta que você quer alterar: ")
-    while(id_alterado.isdigit() == False):
-        print("INVÁLIDO. Insira um ID válido (apenas números)")
-        id_alterado = input("Digite o ID do médico que você quer alterar: ")
-    id_alterado = int(id_alterado)
-
+    id_alterado = input("Digite o ID da consulta que você quer alterar: ").replace(" ", "")
+    while validacoes.validar_id(id_alterado) == False:
+        id_alterado = input("Digite o ID da consulta que você quer alterar: ").replace(" ", "")
+        
     for consulta in banco_consulta:
-        if consulta["id"] == id_alterado:
+        if consulta['id'] == int(id_alterado):
 
             banco_medicos = gerenciador_dados.carregar_dados(ARQUIVO_MEDICO)
 
-            while True:
-                crm_medico = input("CRM do médico (apenas números): ").strip()
-                while (crm_medico.isdigit() == False):
-                    print("INVÁLIDO. Insira apenas números.")
-                    crm_medico = input("CRM do médico (apenas números): ").strip()
+            novo_crm_medico = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
+            while validacoes.validar_crm(novo_crm_medico) == False:
+                novo_crm_medico = input("CRM (XXXXXX/UF): ").replace(" ", "").upper()
                 
                 medico_encontrado = False
 
                 for m in banco_medicos:
-                    if m['crm'] == crm_medico:
+                    if m['crm'] == novo_crm_medico:
                         medico_encontrado = True
-                        novo_medico = m['nome']                
+                        novo_nome_medico = m['nome']                
                 
                 if medico_encontrado:
                     break
                 else:
-                    print("Médico não encontrado. Tente novamente.")
+                    mensagens.erro("ERRO! Médico não encontrado. Tente novamente.")
 
             banco_pacientes = gerenciador_dados.carregar_dados(ARQUIVO_PACIENTE)
 
-            while True:
-                cpf_paciente = input("CPF do paciente (apenas números): ").strip()
-                while (cpf_paciente.isdigit() == False or len(cpf_paciente) != 11):
-                    print("CPF INVÁLIDO! Insira apenas números e verifique novamente.")
-                    cpf_paciente = input("CPF do paciente (apenas números): ").strip()
+            novo_cpf_paciente = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
+            while validacoes.validar_cpf(novo_cpf_paciente) == False: 
+                novo_cpf_paciente = input("CPF (XXXXXXXXXXX): ").replace(" ", "")
 
                 paciente_encontrado = False
 
                 for p in banco_pacientes:
-                    if p['cpf'] == cpf_paciente:
+                    if p['cpf'] == novo_cpf_paciente:
                         paciente_encontrado = True
-                        novo_paciente = p['nome']
+                        novo_nome_paciente = p['nome']
 
                 if paciente_encontrado:
                     break
                 else:
-                    print("Paciente não encontrado.")
+                    mensagens.erro("ERRO! Paciente não encontrado.")
 
-            hoje = datetime.now().date()
+            nova_queixa = input('Queixa: ').strip().capitalize()
+            while validacoes.validar_queixa(nova_queixa) == False:
+                nova_queixa = input('Queixa: ').strip().capitalize()
 
-            while True:
-                nova_data = input('Digite a data da consulta (DD/MM/AAAA): ').strip()
+            nova_data = input("Data da consulta (DD/MM/AAAA): ").replace(" ", "")
+            while validacoes.validar_data_consulta(nova_data) == False:
+                nova_data = input("Data da consulta (DD/MM/AAAA): ").replace(" ", "")
 
-                try:
-                    data_datetime = datetime.strptime(nova_data, "%d/%m/%Y").date()
-
-                    if data_datetime >= hoje:
-                        break
-                    else:
-                        print("Erro: A data deve ser hoje ou uma data futura. Tente novamente.")
-
-                except ValueError:
-                    print("Erro: Formato de data inválido ou data não existe (ex: 30 de Fev). Use DD/MM/AAAA.")
-            
-            nova_queixa = input('Queixa do paciente: ').strip()
-            while nova_queixa == "":
-                print('O campo "queixa" não pode ficar vazio. Tente novamente.')
-                nova_queixa = input('Queixa do paciente: ').strip()
-
-            consulta['medico'] = novo_medico
-            consulta['crm'] = crm_medico
-            consulta['paciente'] = novo_paciente
-            consulta['cpf'] = cpf_paciente
-            consulta['data'] = nova_data
+            consulta['medico'] = novo_nome_medico
+            consulta['crm'] = novo_crm_medico
+            consulta['paciente'] = novo_nome_paciente
+            consulta['cpf'] = novo_cpf_paciente
             consulta['queixa'] = nova_queixa
+            consulta['data'] = nova_data
 
             gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA, banco_consulta)
+
+            mensagens.sucesso("Consulta alterada com sucesso.")
             return
         
-    print("Consulta não encontrada.")
+    mensagens.erro("ERRO! Consulta não encontrada.")
 
 
 def excluir_consulta():
     banco_consulta = gerenciador_dados.carregar_dados(ARQUIVO_CONSULTA)
 
     if len(banco_consulta) == 0:
-        print("Não há consultas agendadas.")
+        mensagens.erro("ERRO! Não há consultas agendadas.")
         return
     else:
-        id_excluido = input("Digite o ID que você quer excluir: ").strip()
-        while id_excluido == "":
-            print("Campo vazio. Tente novamente!")
-            id_excluido = input("Digite o ID que você quer excluir: ").strip()
-        while(id_excluido.isdigit() == False):
-            print("INVÁLIDO. Insira um ID (apenas números)")
-            id_excluido = input("Digite o ID que você quer excluir: ").strip()
-        id_excluido = int(id_excluido)
+        id_excluido = input("Digite o ID que você quer excluir: ").replace(" ", "")
+        while validacoes.validar_id(id_excluido) == False:
+            id_excluido = input("Digite o ID que você quer excluir: ").replace(" ", "")
 
         for consulta in banco_consulta:
-            if(consulta["id"] == id_excluido):
+            if consulta['id'] == int(id_excluido):
+
                 banco_consulta.remove(consulta)
 
                 banco_consulta = gerenciador_dados.salvar_dados(ARQUIVO_CONSULTA, banco_consulta)
+
+                mensagens.sucesso("Consulta agendada com sucesso.")
                 return
 
-        print("Consulta não encontrada.")
+        mensagens.erro("ERRO! Consulta não encontrada.")
