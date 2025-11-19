@@ -126,7 +126,7 @@ def validar_email(email):
         mensagens.erro("ERRO! Campo vazio.")
         return False
 
-    padrao = r"^[a-z0-9\._-]+@[a-z0-9]+\.[a-z]{2,}\.?([a-z]{2,})?"
+    padrao = r"^[a-z0-9\._-]+@[a-z0-9]+\.[a-z]{2,}\.?([a-z]{2,})?$"
     
     if not re.fullmatch(padrao, email):
         mensagens.erro("ERRO! Formato incorreto.")
