@@ -3,6 +3,10 @@ from . import mensagens
 import re
 
 def validar_opcao(opcao):
+    if opcao == "":
+        mensagens.erro("ERRO! Campo em branco.")
+        return False
+    
     if opcao.isdigit() == False:
         mensagens.erro("ERRO! Digite apenas números.")
         return False
